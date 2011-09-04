@@ -9,5 +9,6 @@ try:
 except RuntimeError:
     pass
 
-# Load each of the controllers to handle requests.
-__import__(__name__ + '.controllers', globals(), locals(), ['*'], -1)
+# Import controller will automatically run controller __init__ which imports
+# all controllers inside the controllers folder.
+import controller

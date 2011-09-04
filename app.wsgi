@@ -13,7 +13,7 @@ if modules not in sys.path:
 
 # The source code monitor utility automatically detects changes and triggers
 # process restarts to make development seamless.
-from utilities import monitor
+from utility import monitor
 monitor.start(interval=1.0)
 for directory, dirnames, filenames in os.walk(modules):
     # We will only track changes that happen to files that end in .py or .html
@@ -22,4 +22,5 @@ for directory, dirnames, filenames in os.walk(modules):
             monitor.track(directory + "/" + filename)
 
 # Load entry point of application
-from mu import app as application
+from helper.startup import get_app
+application = get_app()

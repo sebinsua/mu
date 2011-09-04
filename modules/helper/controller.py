@@ -1,7 +1,4 @@
 def generate_controller_list(file_name):
-    return generate_module_list(file_name)
-
-def generate_module_list(file_name):
     from os import path, listdir
     module_directory = path.dirname(file_name)
     reject = ['tmp', 'swp', 'py', 'pyc', '__init__', '']

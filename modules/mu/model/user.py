@@ -1,4 +1,4 @@
-from .database import db
+from helper.database import db
 
 # Required by the User model.
 import uuid
