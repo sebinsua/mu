@@ -1,13 +1,13 @@
-from flask import Flask, render_template, url_for
+from flask import Flask
 app = Flask(__name__)
 
-@app.route("/")
-def indexAction():
-    return "Index page"
+# Load configuration from code and then attempt to load it from the environment
+# variable if this has been added on *nix.
+app.config.from_object(__name__ + '.config')
+try:
+    app.config.from_envvar(app.config['OVERRIDE_WITH_ENVVAR'])
+except RuntimeError:
+    pass
 
-@app.route("/login")
-def loginAction():
-    return render_template('login.html') 
-
-if __name__ == "__main__":
-    app.run(debug = True)
+# Load each of the controllers to handle requests.
+__import__(__name__ + '.controllers', globals(), locals(), ['*'], -1)
