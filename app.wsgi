@@ -7,7 +7,7 @@ execfile(activate_env, dict(__file__ = activate_env))
 
 # Insert the modules directory into the sys.path ONLY if it DOES NOT exist
 # there already.
-modules = cwd + "/modules/" 
+modules = cwd + "/modules/"
 if modules not in sys.path:
     sys.path.append(modules)
 
@@ -22,5 +22,5 @@ for directory, dirnames, filenames in os.walk(modules):
             monitor.track(directory + "/" + filename)
 
 # Load entry point of application
-from helper.startup import get_app
-application = get_app()
+from helper.app import load_app
+application = load_app()

@@ -1,5 +1,6 @@
-from . import app
+from flask import Blueprint
+home = Blueprint('home', __name__)
 
-@app.route("/")
+@home.route("/")
 def index():
     return "Index page: "

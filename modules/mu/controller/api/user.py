@@ -1,5 +1,6 @@
-from . import app
+from flask import Blueprint
+user = Blueprint('api/user', __name__)
 
-@app.route("/api/user")
+@user.route("/api/user")
 def api_user():
     return "{api: 'user'}"

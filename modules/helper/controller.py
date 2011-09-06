@@ -1,3 +1,5 @@
+controller_dict = {}
+
 def generate_controller_list(file_name):
     from os import path, listdir
     module_directory = path.dirname(file_name)
@@ -11,4 +13,48 @@ def generate_controller_list(file_name):
     all_with_duplicates = filter(lambda item: item not in reject, temp_items)
 
     all = list(set(all_with_duplicates))
+
+    build_controller_dict(module_directory, all)
+
     return all
+
+def build_controller_dict(module_directory, controller_list):
+    global controller_dict
+
+    import os
+
+    module_name = ''
+    tail = module_directory
+    head = ''
+    while head != 'controller':
+        path = os.path.split(tail)
+        tail = path[0]
+        head = path[1]
+        if module_name == '':
+            module_name = head
+            continue
+        if head != '':
+            module_name = head + '.' + module_name
+
+    controller_dict[module_name] = controller_list
+
+def generate_blueprint_list(controller_dict):
+    blueprints = []
+    for module_key in controller_dict:
+        for controller in controller_dict[module_key]:
+            blueprint = module_key + '.' + controller + '.' + controller
+            blueprints.append(blueprint)
+    return blueprints
+
+def register_controller_blueprints(app, controller):
+    from flask import Blueprint
+
+    global controller_dict
+    blueprint_list = generate_blueprint_list(controller_dict)
+    for blueprint_name in blueprint_list:
+        try:
+            blueprint = eval(blueprint_name)
+            if isinstance(blueprint, Blueprint):
+                app.register_blueprint(blueprint)
+        except:
+            continue

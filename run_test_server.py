@@ -11,7 +11,7 @@ modules = cwd + "/modules/"
 if modules not in sys.path:
     sys.path.append(modules)
 
-from helper.startup import get_app
+from helper.app import load_app
 if __name__ == "__main__":
-    app = get_app()
+    app = load_app()
     app.run()
