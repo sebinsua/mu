@@ -1,6 +1,3 @@
-from helper.app import get_app
-app = get_app()
-
 from helper.controller import generate_controller_list
 controllers = generate_controller_list(__file__)
 
