@@ -1,6 +1,6 @@
     01 Implement Flask-Oauth in order to:
-    a. Register a user account.
-    b. Be able to login using that user account.
-    c. Link with Facebook and Twitter.
+       a. Register a user account.
+       b. Be able to login using that user account.
+       c. Link with Facebook and Twitter.
     02 Add routes for basic functionality. Implement the most basic outputs.
     03 Create semantic and simple html to display the outputs.
