@@ -53,6 +53,8 @@ def register_controller_blueprints(app, controller):
     blueprint_list = generate_blueprint_list(controller_dict)
     for blueprint_name in blueprint_list:
         try:
+            # NOTE: We needed to pass in the controller module due to the access
+            # by eval() below.
             blueprint = eval(blueprint_name)
             if isinstance(blueprint, Blueprint):
                 app.register_blueprint(blueprint)
