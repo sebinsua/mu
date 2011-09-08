@@ -38,11 +38,11 @@ def build_controller_dict(module_directory, controller_list):
 
     controller_dict[module_name] = controller_list
 
-def generate_blueprint_list(controller_dict, blueprint_postfix='_bp'):
+def generate_blueprint_list(controller_dict):
     blueprints = []
     for module_key in controller_dict:
         for controller in controller_dict[module_key]:
-            blueprint_var_name = controller + blueprint_postfix
+            blueprint_var_name = 'bp'
             blueprint = module_key + '.' + controller + '.' + blueprint_var_name
             blueprints.append(blueprint)
     return blueprints
