@@ -1,0 +1,25 @@
+{% from "helper/form.html" import render_field %}
+{% extends "layout.html" %}
+
+{% block content %}
+  <h1>Register</h1>
+  {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+      <ul class="messages">
+        {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+  <form method="POST" action="/register">
+    {{ form.csrf }}
+    <dl>
+      {{ render_field(form.username) }}
+      {{ render_field(form.email) }}
+      {{ render_field(form.password) }}
+      {{ render_field(form.confirm) }}
+    </dl>
+    <input type="submit" value="Register" />
+  </form>
+{% endblock %}

@@ -3,7 +3,7 @@ from helper.database import db
 # Required by the User model.
 from datetime import datetime
 import uuid
-from flaskext.bcrypt import generate_password_hash
+from flaskext.bcrypt import generate_password_hash, check_password_hash
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -24,3 +24,6 @@ class User(db.Model):
         self.username = username
         self.email = email
         self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
