@@ -19,8 +19,8 @@ class User(db.Model):
     summary = db.Column(db.Text)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
-    def __init__(self, email, username, password):
+    def __init__(self, username, email, password):
         self.uuid = str(uuid.uuid1())
-        self.email = email
         self.username = username
+        self.email = email
         self.password_hash = generate_password_hash(password)

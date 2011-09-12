@@ -4,6 +4,7 @@
 {% block content %}
 <h1>Register</h1>
 <form method="POST" action="/register">
+  {{ form.csrf }}
   <dl>
     {{ render_field(form.username) }}
     {{ render_field(form.email) }}

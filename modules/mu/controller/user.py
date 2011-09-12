@@ -31,10 +31,10 @@ def register_user():
 
         try:
             user_id = user_domain.register(request.form)
-            user_domain.force_login(user_id)
+            # user_domain.force_login(user_id)
             flash("Thanks for registering!")
             return redirect("/")
-        except Error:
+        except:
             # Capture particular exception messages
             # and flash these on the register page.
             flash("There has been a problem with your registration...")
