@@ -18,8 +18,26 @@ CREATE TABLE Users (
 	summary			text,
 	created			timestamp NOT NULL DEFAULT current_timestamp,
 	PRIMARY KEY (user_id),
-	UNIQUE (uuid, email, username)
+	UNIQUE (uuid),
+  UNIQUE (email),
+  UNIQUE (username)
 );
+
+CREATE INDEX users_email_index
+  ON users
+  USING btree
+  (email );
+
+CREATE INDEX users_username_index
+  ON users
+  USING btree
+  (username );
+
+CREATE INDEX users_uuid_index
+  ON users
+  USING btree
+  (uuid );
+
 
 CREATE TABLE ContentAuthors (
 	content_author_id	serial,
@@ -63,8 +81,17 @@ CREATE TABLE ReleaseStatuses (
 	UNIQUE (name)
 );
 
+CREATE TABLE ReleaseGroups (
+  release_group_id  serial,
+  title             text NOT NULL,
+  sort_title        varchar(50),
+  created           timestamp NOT NULL DEFAULT current_timestamp,
+  PRIMARY KEY (release_group_id)
+);
+
 CREATE TABLE Releases (
 	release_id			serial,
+  release_group_id  integer NOT NULL,
 	release_type_id		integer NOT NULL,
 	release_status_id	integer NOT NULL,
 	release_medium_id	integer NOT NULL,
@@ -72,6 +99,7 @@ CREATE TABLE Releases (
 	sort_title			varchar(50),
 	created				timestamp NOT NULL DEFAULT current_timestamp,
 	PRIMARY KEY (release_id),
+  FOREIGN KEY (release_group_id) REFERENCES ReleaseGroups,
 	FOREIGN KEY (release_type_id) REFERENCES ReleaseTypes,
 	FOREIGN KEY (release_status_id) REFERENCES ReleaseStatuses,
 	FOREIGN KEY (release_medium_id) REFERENCES ReleaseMediums
