@@ -19,8 +19,22 @@ def load_app():
     return get_app()
 
 def get_app():
-    f = open(os.getcwd() + '/APPLICATION_NAME')
-    APPLICATION_NAME = f.read().strip();
+    try:
+        f = open(os.getcwd() + '/APPLICATION_NAME')
+        APPLICATION_NAME = f.read().strip();
+    except IOError:
+        pass
 
-    module = import_module(APPLICATION_NAME)
-    return module.app
+    if not APPLICATION_NAME:
+        APPLICATION_NAME = 'app'
+
+    try:
+        module = import_module(APPLICATION_NAME)
+        return module.app
+    except ImportError:
+        APPLICATION_NAME = 'app'
+        module = import_module(APPLICATION_NAME)
+        return module.app
+
+    # This next line should never be run.
+    return False
