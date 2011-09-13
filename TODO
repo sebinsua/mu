@@ -1,6 +1,2 @@
-01. Alter the database to allow:
-    a. works to contain multiple releases... ;)
-    b. uuid to be a key
-    c. email to be properly unique and to give the correct error message if there is a duplicate. ;)
-02. Continue writing semantic html until we have a good template making use of inheritance. :)
-03. Write code to output releases directly to the page as text. Ugly but the boiler plate code is starting to work!
+01. Continue writing semantic html until we have a good template making use of inheritance. :)
+02. Write code to output releases directly to the page as text. Ugly but the boiler plate code is starting to work!
