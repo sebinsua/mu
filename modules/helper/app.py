@@ -18,7 +18,7 @@ def create_app(name):
 def load_app():
     return get_app()
 
-def get_app():
+def get_app_name():
     try:
         f = open(os.getcwd() + '/APPLICATION_NAME')
         APPLICATION_NAME = f.read().strip();
@@ -28,6 +28,10 @@ def get_app():
     if not APPLICATION_NAME:
         APPLICATION_NAME = 'app'
 
+    return APPLICATION_NAME
+
+def get_app():
+    APPLICATION_NAME = get_app_name()
     try:
         module = import_module(APPLICATION_NAME)
         return module.app

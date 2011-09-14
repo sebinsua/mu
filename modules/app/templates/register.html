@@ -1,17 +1,10 @@
+{% from "helper/core.html" import output_flashed_messages %}
 {% from "helper/form.html" import render_field %}
-{% extends "layout.html" %}
+{% extends layout_template if layout_template is defined else "main-layout.html" %}
 
 {% block content %}
   <h1>Register</h1>
-  {% with messages = get_flashed_messages(with_categories=True) %}
-    {% if messages %}
-      <ul class="messages">
-        {% for category, message in messages %}
-        <li class="{{ category }}">{{ message }}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-  {% endwith %}
+  {{ output_flashed_messages() }}
   <form method="POST" action="/register">
     {{ form.csrf }}
     <dl>

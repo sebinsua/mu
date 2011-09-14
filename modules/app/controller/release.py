@@ -9,6 +9,7 @@ def show_release(artist, release_type, release):
 def show_releases():
     pass
 
+@bp.route("/add/<release_type>/to/<artist>")
 @bp.route("/artist/<artist>/add/<release_type>")
 def add_release_to_artist(artist, release_type):
     return "Add release to artist"

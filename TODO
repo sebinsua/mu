@@ -1,2 +1,4 @@
-01. Continue writing semantic html until we have a good template making use of inheritance. :)
-02. Write code to output releases directly to the page as text. Ugly but the boiler plate code is starting to work!
+01. Write code to output releases directly to the page as text. Ugly but the boiler plate code is starting to work!
+
+LOW PRIORITY:
+01. Leave this until I know a better way: generate body classes from macro; generate title from macro.
