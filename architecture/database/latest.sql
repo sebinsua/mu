@@ -1,5 +1,5 @@
 -- mu
--- database v0.01
+-- database v0.02
 
 SET client_encoding = 'UTF8';
 
@@ -23,22 +23,6 @@ CREATE TABLE Users (
   UNIQUE (username)
 );
 
-CREATE INDEX users_email_index
-  ON users
-  USING btree
-  (email );
-
-CREATE INDEX users_username_index
-  ON users
-  USING btree
-  (username );
-
-CREATE INDEX users_uuid_index
-  ON users
-  USING btree
-  (uuid );
-
-
 CREATE TABLE ContentAuthors (
 	content_author_id	serial,
 	musicbrainz_mbid	char(36),
@@ -51,104 +35,96 @@ CREATE TABLE ContentAuthors (
 );
 
 CREATE TABLE UserContentAuthors (
-	usercontent_author_id	serial,
+	user_content_author_id	serial,
 	user_id					integer NOT NULL,
 	content_author_id		integer NOT NULL,
 	created					timestamp NOT NULL DEFAULT current_timestamp,
-	PRIMARY KEY (usercontent_author_id),
+	PRIMARY KEY (user_content_author_id),
 	FOREIGN KEY (user_id) REFERENCES Users,
 	FOREIGN KEY (content_author_id) REFERENCES ContentAuthors
 );
 
-CREATE TABLE ReleaseMediums (
-	release_medium_id	serial,
+CREATE TABLE ProductMediums (
+	product_medium_id	serial,
 	name				varchar(50) NOT NULL,
-	PRIMARY KEY (release_medium_id),
+	PRIMARY KEY (product_medium_id),
 	UNIQUE (name)
 );
 
-CREATE TABLE ReleaseTypes (
-	release_type_id	serial,
+CREATE TABLE ProductTypes (
+	product_type_id	serial,
 	name			varchar(50) NOT NULL,
-	PRIMARY KEY (release_type_id),
+	PRIMARY KEY (product_type_id),
 	UNIQUE (name)
 );
 
-CREATE TABLE ReleaseStatuses (
-	release_status_id	serial,
+CREATE TABLE ProductStatuses (
+	product_status_id	serial,
 	name				varchar(50) NOT NULL,
-	PRIMARY KEY (release_status_id),
+	PRIMARY KEY (product_status_id),
 	UNIQUE (name)
 );
 
-CREATE TABLE ReleaseGroups (
-  release_group_id  serial,
+CREATE TABLE Works (
+  work_id  serial,
   title             text NOT NULL,
   sort_title        varchar(50),
   created           timestamp NOT NULL DEFAULT current_timestamp,
-  PRIMARY KEY (release_group_id)
+  PRIMARY KEY (work_id)
 );
 
-CREATE TABLE Releases (
-	release_id			serial,
-  release_group_id  integer NOT NULL,
-	release_type_id		integer NOT NULL,
-	release_status_id	integer NOT NULL,
-	release_medium_id	integer NOT NULL,
+CREATE TABLE Products (
+	product_id			serial,
+  work_id  integer,
+	product_type_id		integer NOT NULL,
+	product_status_id	integer NOT NULL,
+	product_medium_id	integer NOT NULL,
+  event_id          integer NOT NULL,
 	title				text NOT NULL,
 	sort_title			varchar(50),
 	created				timestamp NOT NULL DEFAULT current_timestamp,
-	PRIMARY KEY (release_id),
-  FOREIGN KEY (release_group_id) REFERENCES ReleaseGroups,
-	FOREIGN KEY (release_type_id) REFERENCES ReleaseTypes,
-	FOREIGN KEY (release_status_id) REFERENCES ReleaseStatuses,
-	FOREIGN KEY (release_medium_id) REFERENCES ReleaseMediums
+	PRIMARY KEY (product_id),
+  FOREIGN KEY (work_id) REFERENCES Works,
+	FOREIGN KEY (product_type_id) REFERENCES ProductTypes,
+	FOREIGN KEY (product_status_id) REFERENCES ProductStatuses,
+	FOREIGN KEY (product_medium_id) REFERENCES ProductMediums,
+  FOREIGN KEY (event_id) REFERENCES Events
 );
 
-CREATE TABLE ContentAuthorReleaseTypes (
+CREATE TABLE ContentAuthorProductTypes (
 	content_author_release_type_id	serial,
 	name							varchar(50) NOT NULL,
 	PRIMARY KEY (content_author_release_type_id),
 	UNIQUE (name)
 );
 
-CREATE TABLE ContentAuthorReleases (
-	content_author_release_id		serial,
+CREATE TABLE ContentAuthorProducts (
+	content_author_product_id		serial,
 	content_author_id				integer NOT NULL,
 	release_id						integer NOT NULL,
-	content_author_release_type_id	integer NOT NULL,
+	content_author_product_type_id	integer NOT NULL,
 	created							timestamp NOT NULL DEFAULT current_timestamp,
-	PRIMARY KEY (content_author_release_id),
+	PRIMARY KEY (content_author_product_id),
 	FOREIGN KEY (content_author_id) REFERENCES ContentAuthors,
-	FOREIGN KEY (release_id)	REFERENCES Releases,
-	FOREIGN KEY (content_author_release_type_id) REFERENCES ContentAuthorReleaseTypes
+	FOREIGN KEY (product_id)	REFERENCES Products,
+	FOREIGN KEY (content_author_product_type_id) REFERENCES ContentAuthorProductTypes
 );
 
 CREATE TABLE EventTypes (
-	eventTypeID	serial,
+	event_type_id	serial,
 	name		varchar(50),
-	PRIMARY KEY (eventTypeID),
+	PRIMARY KEY (event_type_id),
 	UNIQUE (name)
 );
 
 CREATE TABLE Events (
 	event_id	serial,
-	eventTypeID	integer NOT NULL,
-	created		timestamp NOT NULL DEFAULT current_timestamp,
-	PRIMARY KEY (event_id),
-	FOREIGN KEY (eventTypeID) REFERENCES EventTypes
-);
-
-CREATE TABLE ReleaseEvents (
-	releaseevent_id					serial,
-	release_id						integer NOT NULL,
-	event_id						integer NOT NULL,
+	event_type_id	integer NOT NULL,
 	predicted_release_date			date,
 	predicted_textual_release_date	text,
-	created							timestamp NOT NULL DEFAULT current_timestamp,
-	PRIMARY KEY (releaseevent_id),
-	FOREIGN KEY (release_id) REFERENCES Releases,
-	FOREIGN KEY (event_id) REFERENCES Events
+  created		timestamp NOT NULL DEFAULT current_timestamp,
+	PRIMARY KEY (event_id),
+	FOREIGN KEY (event_type_id) REFERENCES EventTypes
 );
 
 CREATE TABLE UserEventStatuses (
@@ -180,23 +156,23 @@ CREATE TABLE ContentOwners (
 	PRIMARY KEY (content_owner_id)
 );
 
-CREATE TABLE ContentOwnerReleaseTypes (
+CREATE TABLE ContentOwnerProductTypes (
 	content_owner_release_type_id	serial,
 	name							varchar(50),
-	PRIMARY KEY (content_owner_release_type_id),
+	PRIMARY KEY (content_owner_product_type_id),
 	UNIQUE (name)
 );
 
-CREATE TABLE ContentOwnerReleases (
-	content_owner_release_id		serial,
+CREATE TABLE ContentOwnerProducts (
+	content_owner_product_id		serial,
 	content_owner_id				integer NOT NULL,
 	release_id						integer NOT NULL,
-	content_owner_release_type_id	integer NOT NULL,
+	content_owner_product_type_id	integer NOT NULL,
 	created							timestamp NOT NULL DEFAULT current_timestamp,
-	PRIMARY KEY (content_owner_release_id),
+	PRIMARY KEY (content_owner_product_id),
 	FOREIGN KEY (content_owner_id) REFERENCES ContentOwners,
-	FOREIGN KEY (release_id) REFERENCES Releases,
-	FOREIGN KEY (content_owner_release_type_id) REFERENCES ContentOwnerReleaseTypes
+	FOREIGN KEY (product_id) REFERENCES Products,
+	FOREIGN KEY (content_owner_product_type_id) REFERENCES ContentOwnerProductTypes
 );
 
 COMMIT;

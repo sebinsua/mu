@@ -2,3 +2,4 @@
 
 LOW PRIORITY:
 01. Leave this until I know a better way: generate body classes from macro; generate title from macro.
+02. Database changes should happen depending on when they are needed. What exists should suffice for now.
