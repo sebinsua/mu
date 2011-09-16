@@ -20,7 +20,7 @@ def login_user():
 
         try:
             if user_domain.login(request.form):
-                # It would actually be better to redirect to the original page
+                # TODO: It would actually be better to redirect to the original page
                 # we were on by passing this via request.form
                 return redirect("/")
             else:
@@ -47,8 +47,7 @@ def register_user():
         user_domain.user_repository = UserRepository()
 
         try:
-            user_id = user_domain.register(request.form)
-            user_domain.force_login(user_id)
+            user_id = user_domain.register(request.form, force_login=True)
             flash("Thanks for registering!", "success")
             return redirect("/")
         except Exception, e:
