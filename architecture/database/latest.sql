@@ -1,8 +1,6 @@
 -- mu
 -- database v0.02
 
-SET client_encoding = 'UTF8';
-
 BEGIN;
 
 CREATE TABLE Users (
@@ -42,6 +40,23 @@ CREATE TABLE UserContentAuthors (
 	PRIMARY KEY (user_content_author_id),
 	FOREIGN KEY (user_id) REFERENCES Users,
 	FOREIGN KEY (content_author_id) REFERENCES ContentAuthors
+);
+
+CREATE TABLE EventTypes (
+	event_type_id	serial,
+	name		varchar(50),
+	PRIMARY KEY (event_type_id),
+	UNIQUE (name)
+);
+
+CREATE TABLE Events (
+	event_id	serial,
+	event_type_id	integer NOT NULL,
+	predicted_release_date			date,
+	predicted_textual_release_date	text,
+  created		timestamp NOT NULL DEFAULT current_timestamp,
+	PRIMARY KEY (event_id),
+	FOREIGN KEY (event_type_id) REFERENCES EventTypes
 );
 
 CREATE TABLE ProductMediums (
@@ -92,39 +107,22 @@ CREATE TABLE Products (
 );
 
 CREATE TABLE ContentAuthorProductTypes (
-	content_author_release_type_id	serial,
+	content_author_product_type_id	serial,
 	name							varchar(50) NOT NULL,
-	PRIMARY KEY (content_author_release_type_id),
+	PRIMARY KEY (content_author_product_type_id),
 	UNIQUE (name)
 );
 
 CREATE TABLE ContentAuthorProducts (
 	content_author_product_id		serial,
 	content_author_id				integer NOT NULL,
-	release_id						integer NOT NULL,
+	product_id						integer NOT NULL,
 	content_author_product_type_id	integer NOT NULL,
 	created							timestamp NOT NULL DEFAULT current_timestamp,
 	PRIMARY KEY (content_author_product_id),
 	FOREIGN KEY (content_author_id) REFERENCES ContentAuthors,
 	FOREIGN KEY (product_id)	REFERENCES Products,
 	FOREIGN KEY (content_author_product_type_id) REFERENCES ContentAuthorProductTypes
-);
-
-CREATE TABLE EventTypes (
-	event_type_id	serial,
-	name		varchar(50),
-	PRIMARY KEY (event_type_id),
-	UNIQUE (name)
-);
-
-CREATE TABLE Events (
-	event_id	serial,
-	event_type_id	integer NOT NULL,
-	predicted_release_date			date,
-	predicted_textual_release_date	text,
-  created		timestamp NOT NULL DEFAULT current_timestamp,
-	PRIMARY KEY (event_id),
-	FOREIGN KEY (event_type_id) REFERENCES EventTypes
 );
 
 CREATE TABLE UserEventStatuses (
@@ -157,7 +155,7 @@ CREATE TABLE ContentOwners (
 );
 
 CREATE TABLE ContentOwnerProductTypes (
-	content_owner_release_type_id	serial,
+	content_owner_product_type_id	serial,
 	name							varchar(50),
 	PRIMARY KEY (content_owner_product_type_id),
 	UNIQUE (name)
@@ -166,7 +164,7 @@ CREATE TABLE ContentOwnerProductTypes (
 CREATE TABLE ContentOwnerProducts (
 	content_owner_product_id		serial,
 	content_owner_id				integer NOT NULL,
-	release_id						integer NOT NULL,
+	product_id						integer NOT NULL,
 	content_owner_product_type_id	integer NOT NULL,
 	created							timestamp NOT NULL DEFAULT current_timestamp,
 	PRIMARY KEY (content_owner_product_id),
