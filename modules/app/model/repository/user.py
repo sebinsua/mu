@@ -2,6 +2,10 @@ from helper.database import db
 from mu.model.entity.user import User
 
 class UserRepository:
+    # TODO: All repositories should eventually support CRUD (add, update,
+    # remove, query). However, there will also be more specific commands to
+    # ease development.
+
     def add_user(self, user):
         db.session.add(user)
         db.session.commit()

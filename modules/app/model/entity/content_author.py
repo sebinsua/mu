@@ -1,4 +1,5 @@
 from helper.database import db
+from sqlalchemy.ext.associationproxy import association_proxy
 
 from datetime import datetime
 
@@ -11,6 +12,8 @@ class ContentAuthor(db.Model):
     start_date = db.Column(db.DateTime)
     end_date = db.Column(db.DateTime)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
+
+    products = association_proxy('ContentAuthorProducts', 'Products')
 
     def __init__(self, name, musicbrainz_mbid=None, \
         start_date=None, end_date=None):
@@ -30,12 +33,12 @@ class ContentAuthorProducts(db.Model):
             db.ForeignKey('ContentAuthorProductTypes.content_author_product_type_id'))
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
-    content_author = db.relationship('ContentAuthor', \
+    content_author = db.relationship('ContentAuthor', uselist=False, \
             backref=db.backref('ContentAuthorProducts', lazy='dynamic'))
-    product = db.relationship('Product', \
+    product = db.relationship('Product', uselist=False, \
             backref=db.backref('ContentAuthorProducts', lazy='dynamic'))
     content_author_product_type = db.relationship('ContentAuthorProductType', \
-            backref=db.backref('ContentAuthorProducts', lazy='dynamic'))
+            uselist=False, backref=db.backref('ContentAuthorProducts', lazy='dynamic'))
 
     def __init__(self, content_author_id, product_id, \
             content_author_product_type_id=None):

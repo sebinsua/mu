@@ -1,4 +1,5 @@
 from helper.database import db
+from sqlalchemy.ext.associationproxy import association_proxy
 
 from datetime import datetime
 
@@ -10,6 +11,8 @@ class ContentOwner(db.Model):
     start_date = db.Column(db.DateTime)
     end_date = db.Column(db.DateTime)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
+
+    products = association_proxy('ContentOwnerProducts', 'Products')
 
     def __init__(self, name, start_date=None, end_date=None):
         self.name = name
@@ -28,7 +31,7 @@ class ContentOwnerProductType(db.Model):
     def __repr__(self):
         return '<ContentOwnerProductType %r>' % self.name
 
-class ContentOwnerProducts(db.Model):
+class ContentOwnerProduct(db.Model):
     __tablename__ = 'ContentOwnerProducts'
     content_owner_product_id = db.Column(db.Integer, primary_key=True)
     content_owner_id = db.Column(db.Integer, \
@@ -39,12 +42,12 @@ class ContentOwnerProducts(db.Model):
             db.ForeignKey('ContentOwnerProductTypes.content_owner_product_type_id'))
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
-    content_owner = db.relationship('ContentOwners', \
+    content_owner = db.relationship('ContentOwners', uselist=False, \
             backref=db.backref('ContentOwnerProducts', lazy='dynamic'))
-    product = db.relationship('Products', \
+    product = db.relationship('Products', uselist=False, \
             backref=db.backref('ContentOwnerProducts', lazy='dynamic'))
     content_owner_product_type = db.relationship('ContentOwnerProductType', \
-            backref=db.backref('ContentOwnerProductTypes', lazy='dynamic'))
+            uselist=False, backref=db.backref('ContentOwnerProductTypes', lazy='dynamic'))
 
     def __init__(self, content_owner_id, product_id, \
             content_owner_product_type_id=None):

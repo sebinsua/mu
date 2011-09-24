@@ -11,7 +11,7 @@ class Event(db.Model):
     predicted_textual_release_date = db.Column(db.Text)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
-    event_type = db.relationship('EventType', \
+    event_type = db.relationship('EventType', uselist=False, \
             backref=db.backref('Events', lazy='dynamic'))
 
     def __init__(self, event_type_id, predicted_release_date=None, \

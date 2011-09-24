@@ -19,16 +19,16 @@ class Product(db.Model):
     sort_title = db.Column(db.String(50))
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
-    work = db.relationship('Work', \
+    work = db.relationship('Work', uselist=False, \
             backref=db.backref('Products', lazy='dynamic'))
-    product_type = db.relationship('ProductType', \
+    product_type = db.relationship('ProductType', uselist=False, \
             backref=db.backref('Products', lazy='dynamic'))
-    product_status = db.relationship('ProductStatus', \
+    product_status = db.relationship('ProductStatus', uselist=False, \
             backref=db.backref('Products', lazy='dynamic'))
-    product_medium = db.relationship('ProductMedium', \
+    product_medium = db.relationship('ProductMedium', uselist=False, \
             backref=db.backref('Products', lazy='dynamic'))
-    event = db.relationship('Event', \
-            backref=db.backref('Products', lazy='dynamic'))
+    event = db.relationship('Event', uselist=False, \
+            backref=db.backref('Products', lazy='dynamic', uselist=False))
 
     def __init__(self, title, product_type_id, product_status_id, \
             event_id, product_medium_id=None, work_id=None):

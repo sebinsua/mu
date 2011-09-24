@@ -1,4 +1,5 @@
 from helper.database import db
+from sqlalchemy.ext.associationproxy import association_proxy
 
 # Required by the User model.
 from datetime import datetime
@@ -18,6 +19,8 @@ class User(db.Model):
     date_of_birth = db.Column(db.Time)
     summary = db.Column(db.Text)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
+
+    events = association_proxy('UserEvents', 'Events')
 
     def __init__(self, username, email, password, first_name=None, \
             last_name=None, gender=None, date_of_birth=None, summary=None):
@@ -46,9 +49,9 @@ class UserContentAuthor(db.Model):
             db.ForeignKey('ContentAuthors.content_author_id'))
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
-    user = db.relationship('User', \
+    user = db.relationship('User', uselist=False, \
             backref=db.backref('UserContentAuthors', lazy='dynamic'))
-    content_author = db.relationship('ContentAuthor', \
+    content_author = db.relationship('ContentAuthor', uselist=False, \
             backref=db.backref('UserContentAuthors', lazy='dynamic'))
 
     def __init__(self, user_id, content_author_id):
@@ -75,11 +78,11 @@ class UserEvent(db.Model):
             db.ForeignKey('UserEventStatuses.user_event_status_id'))
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
-    user = db.relationship('User', \
+    user = db.relationship('User', uselist=False, \
             backref=db.backref('UserEvents', lazy='dynamic'))
-    event = db.relationship('Event', \
+    event = db.relationship('Event', uselist=False, \
             backref=db.backref('UserEvents', lazy='dynamic'))
-    user_event_status = db.relationship('UserEventStatus', \
+    user_event_status = db.relationship('UserEventStatus', uselist=False, \
             backref=db.backref('UserEvents', lazy='dynamic'))
 
     def __init__(self, user_id, event_id, user_event_status_id=None):
