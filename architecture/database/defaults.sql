@@ -29,6 +29,3 @@ INSERT INTO ProductStatuses (name) VALUES ('Official'), ('Promotional'), ('Bootl
 
 -- default ProductMediums
 INSERT INTO ProductMediums (name) VALUES ('Live'), ('Digital'), ('CD'), ('DVD'), ('Vinyl'), ('Cassette');
-
--- default UserEventStatuses
-INSERT INTO UserEventStatuses (name) VALUES ('Yes'), ('No'), ('Maybe');

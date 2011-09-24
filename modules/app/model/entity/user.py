@@ -58,15 +58,6 @@ class UserContentAuthor(db.Model):
         self.user_id = user_id
         self.content_author_id = content_author_id
 
-class UserEventStatus(db.Model):
-    __tablename__ = 'UserEventStatuses'
-    user_event_status_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), unique=True, nullable=False)
-
-    def __init__(self, user_event_status_id, name):
-        self.user_event_status_id = user_event_status_id
-        self.name = name
-
 class UserEvent(db.Model):
     __tablename__ = 'UserEvents'
     user_event_id = db.Column(db.Integer, primary_key=True)
@@ -74,15 +65,12 @@ class UserEvent(db.Model):
             db.ForeignKey('Users.user_id'), nullable=False)
     event_id= db.Column(db.Integer, \
             db.ForeignKey('Events.event_id'), nullable=False)
-    user_event_status_id = db.Column(db.Integer, \
-            db.ForeignKey('UserEventStatuses.user_event_status_id'))
+    certainty = db.Column(db.Integer, nullable=False)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
     user = db.relationship('User', uselist=False, \
             backref=db.backref('UserEvents', lazy='dynamic'))
     event = db.relationship('Event', uselist=False, \
-            backref=db.backref('UserEvents', lazy='dynamic'))
-    user_event_status = db.relationship('UserEventStatus', uselist=False, \
             backref=db.backref('UserEvents', lazy='dynamic'))
 
     def __init__(self, user_id, event_id, user_event_status_id=None):

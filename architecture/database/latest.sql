@@ -125,18 +125,11 @@ CREATE TABLE ContentAuthorProducts (
 	FOREIGN KEY (content_author_product_type_id) REFERENCES ContentAuthorProductTypes
 );
 
-CREATE TABLE UserEventStatuses (
-	user_event_status_id	serial,
-	name					varchar(50) NOT NULL,
-	PRIMARY KEY (user_event_status_id),
-	UNIQUE (name)
-);
-
 CREATE TABLE UserEvents (
 	user_event_id			serial,
 	user_id					integer NOT NULL,
 	event_id				integer NOT NULL,
-	user_event_status_id	integer,
+	certainty     	integer NOT NULL,
 	created					timestamp NOT NULL DEFAULT current_timestamp,
 	PRIMARY KEY (user_event_id),
 	FOREIGN KEY (user_id) REFERENCES Users,
