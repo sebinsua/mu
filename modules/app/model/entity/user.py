@@ -6,7 +6,7 @@ import uuid
 from flaskext.bcrypt import generate_password_hash, check_password_hash
 
 class User(db.Model):
-    __tablename__ = 'users'
+    __tablename__ = 'Users'
     user_id = db.Column(db.Integer, primary_key=True)
     uuid = db.Column(db.String(100), unique=True, nullable=False)
     email = db.Column(db.Text, unique=True)
@@ -33,6 +33,7 @@ class User(db.Model):
         return check_password_hash(self.password_hash, password)
 
 class UserContentAuthor(db.Model):
+    __tablename__ = 'UserContentAuthors'
     user_content_author_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, nullable=False)
     content_author_id = db.Column(db.Integer, nullable=False)
@@ -43,6 +44,7 @@ class UserContentAuthor(db.Model):
         self.content_author_id = content_author_id
 
 class UserEventStatus(db.Model):
+    __tablename__ = 'UserEventStatuses'
     user_event_status_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
 
@@ -51,6 +53,7 @@ class UserEventStatus(db.Model):
         self.name = name
 
 class UserEvent(db.Model):
+    __tablename__ = 'UserEvents'
     user_event_id = db.Column(db.Integer, primary_key=True)
     user_id= db.Column(db.Integer, nullable=False)
     event_id= db.Column(db.Integer, nullable=False)
