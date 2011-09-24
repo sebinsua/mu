@@ -52,7 +52,7 @@ CREATE TABLE EventTypes (
 CREATE TABLE Events (
 	event_id	serial,
 	event_type_id	integer NOT NULL,
-	predicted_release_date			date,
+	predicted_release_date			timestamp,
 	predicted_textual_release_date	text,
   created		timestamp NOT NULL DEFAULT current_timestamp,
 	PRIMARY KEY (event_id),

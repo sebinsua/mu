@@ -8,7 +8,7 @@ class Event(db.Model):
     event_type_id = db.Column(db.Integer, \
             db.ForeignKey('EventTypes.event_type_id'), nullable=False)
     predicted_release_date = db.Column(db.DateTime)
-    predicted_textual_release_date = db.Column(db.Text)
+    predicted_textual_release_date = db.Column(db.PickleType)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
     event_type = db.relationship('EventType', uselist=False, \
