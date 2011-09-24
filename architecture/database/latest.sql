@@ -1,5 +1,5 @@
 -- mu
--- database v0.02
+-- database v0.03
 
 BEGIN;
 

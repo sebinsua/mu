@@ -5,3 +5,4 @@ LOW PRIORITY:
 01. Leave this until I know a better way: generate body classes from macro; generate title from macro.
 02. Database changes should happen depending on when they are needed. What exists should suffice for now.
 03. Begin to use some test-suite to test the basic functionality I've created.
+04. Find some way of making sure postgres is started on MacOSX. Consider using StackExchange since I've tried for ages already...
