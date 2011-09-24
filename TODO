@@ -1,10 +1,7 @@
-01. Fix my poor implementation of the repository pattern. The queries should be created inside the domain
-    maybe using some kind of UserQueryFilter, etc...
-    The repository should only have the following methods: create, update, delete, query
-    -- and maybe some query helpers. ;)
-    More importantly read the SQLAlchemy tutorials and make a decision!
-02. Write code to output releases directly to the page as text. Ugly but the boiler plate code is starting to work!
+01. Write code to output releases directly to the page as text. Ugly but the boiler plate code is starting to work!
+02. Write code to input releases in (a) bulk and (b) singularly.
 
 LOW PRIORITY:
 01. Leave this until I know a better way: generate body classes from macro; generate title from macro.
 02. Database changes should happen depending on when they are needed. What exists should suffice for now.
+03. Begin to use some test-suite to test the basic functionality I've created.
