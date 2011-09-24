@@ -22,10 +22,20 @@ class ContentAuthor(db.Model):
 
 class ContentAuthorProducts(db.Model):
     content_author_product_id = db.Column(db.Integer, primary_key=True)
-    content_author_id = db.Column(db.Integer, nullable=False)
-    product_id = db.Column(db.Integer, nullable=False)
-    content_author_product_type_id = db.Column(db.Integer)
+    content_author_id = db.Column(db.Integer, nullable=False, \
+            db.ForeignKey('ContentAuthors.content_author_id'))
+    product_id = db.Column(db.Integer, nullable=False, \
+            db.ForeignKey('Products.product_id'))
+    content_author_product_type_id = db.Column(db.Integer, \
+            db.ForeignKey('ContentAuthorProductTypes.content_author_product_type_id'))
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
+
+    content_author = db.relationship('ContentAuthor', \
+            backref=db.backref('ContentAuthorProducts', lazy='dynamic'))
+    product = db.relationship('Product', \
+            backref=db.backref('ContentAuthorProducts', lazy='dynamic'))
+    content_author_product_type = db.relationship('ContentAuthorProductType', \
+            backref=db.backref('ContentAuthorProducts', lazy='dynamic'))
 
     def __init__(self, content_author_id, product_id, \
             content_author_product_type_id=None):
@@ -36,7 +46,7 @@ class ContentAuthorProducts(db.Model):
 class ContentAuthorProductType(db.Model):
     __tablename__ = 'ContentAuthorProductTypes'
     content_author_product_type_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
+    name = db.Column(db.String(50), unique=True, nullable=False)
 
     def __init__(self, name):
         self.name = name

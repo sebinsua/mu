@@ -20,7 +20,7 @@ class ContentOwner(db.Model):
 class ContentOwnerProductType(db.Model):
     __tablename__ = 'ContentOwnerProductTypes'
     content_owner_product_type_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
+    name = db.Column(db.String(50), unique=True, nullable=False)
 
     def __init__(self, name):
         self.name = name
@@ -31,10 +31,20 @@ class ContentOwnerProductType(db.Model):
 class ContentOwnerProducts(db.Model):
     __tablename__ = 'ContentOwnerProducts'
     content_owner_product_id = db.Column(db.Integer, primary_key=True)
-    content_owner_id = db.Column(db.Integer, nullable=False)
-    product_id = db.Column(db.Integer, nullable=False)
-    content_owner_product_type_id = db.Column(db.Integer)
+    content_owner_id = db.Column(db.Integer, nullable=False, \
+            db.ForeignKey('ContentOwners.content_owner_id'))
+    product_id = db.Column(db.Integer, nullable=False, \
+            db.ForeignKey('Products.product_id'))
+    content_owner_product_type_id = db.Column(db.Integer, \
+            db.ForeignKey('ContentOwnerProductTypes.content_owner_product_type_id'))
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
+
+    content_owner = db.relationship('ContentOwners', \
+            backref=db.backref('ContentOwnerProducts', lazy='dynamic'))
+    product = db.relationship('Products', \
+            backref=db.backref('ContentOwnerProducts', lazy='dynamic'))
+    content_owner_product_type = db.relationship('ContentOwnerProductType', \
+            backref=db.backref('ContentOwnerProductTypes', lazy='dynamic'))
 
     def __init__(self, content_owner_id, product_id, \
             content_owner_product_type_id=None):

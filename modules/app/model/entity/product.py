@@ -5,29 +5,33 @@ from datetime import datetime
 class Product(db.Model):
     __tablename__ = 'Products'
     product_id = db.Column(db.Integer, primary_key=True)
-    work_id = db.Column(db.Integer,
+    work_id = db.Column(db.Integer, \
             db.ForeignKey('Works.work_id'))
-    product_type_id = db.Column(db.Integer, \
+    product_type_id = db.Column(db.Integer, nullable=False, \
             db.ForeignKey('ProductTypes.product_type_id'))
-    product_status_id  = db.Column(db.Integer, \
+    product_status_id  = db.Column(db.Integer, nullable=False, \
             db.ForeignKey('ProductStatuses.product_status_id'))
-    event_id = db.Column(db.Integer, \
+    product_medium_id = db.Column(db.Integer, nullable=False, \
+            db.ForeignKey('ProductMediums.product_medium_id'))
+    event_id = db.Column(db.Integer, nullable=False \
             db.ForeignKey('Events.event_id'))
     title = db.Column(db.Text, nullable=False)
-    sort_title = db.Column(db.String(50), nullable=False)
+    sort_title = db.Column(db.String(50))
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
     work = db.relationship('Work', \
-            backref=db.backref('Products', lazy='dynamic')
+            backref=db.backref('Products', lazy='dynamic'))
     product_type = db.relationship('ProductType', \
             backref=db.backref('Products', lazy='dynamic'))
     product_status = db.relationship('ProductStatus', \
             backref=db.backref('Products', lazy='dynamic'))
+    product_medium = db.relationship('ProductMedium', \
+            backref=db.backref('Products', lazy='dynamic'))
     event = db.relationship('Event', \
             backref=db.backref('Products', lazy='dynamic'))
 
-    def __init__(self, work_id=None, product_type_id, product_status_id=None, \
-        event_id=None, title):
+    def __init__(self, title, product_type_id, product_status_id, \
+            event_id, product_medium_id=None, work_id=None):
         self.work_id = work_id
         self.product_type_id = product_type_id
         self.product_status_id = product_status_id
@@ -38,7 +42,7 @@ class Product(db.Model):
 class ProductMedium(db.Model):
     __tablename__ = 'ProductMediums'
     product_medium_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
+    name = db.Column(db.String(50), unique=True, nullable=False)
 
     def __init__(self, name):
         self.name = name
@@ -49,7 +53,7 @@ class ProductMedium(db.Model):
 class ProductType(db.Model):
     __tablename__ = 'ProductTypes'
     product_type_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
+    name = db.Column(db.String(50), unique=True, nullable=False)
 
     def __init__(self, name):
         self.name = name
@@ -60,7 +64,7 @@ class ProductType(db.Model):
 class ProductStatus(db.Model):
     __tablename__ = 'ProductStatuses'
     product_status_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
+    name = db.Column(db.String(50), unique=True, nullable=False)
 
     def __init__(self, name):
         self.name = name

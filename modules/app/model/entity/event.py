@@ -5,10 +5,14 @@ from datetime import datetime
 class Event(db.Model):
     __tablename__ = 'Events'
     event_id = db.Column(db.Integer, primary_key=True)
-    event_type_id = db.Column(db.Integer)
+    event_type_id = db.Column(db.Integer, nullable=False, \
+            db.ForeignKey('EventTypes.event_type_id'))
     predicted_release_date = db.Column(db.DateTime)
     predicted_textual_release_date = db.Column(db.Text)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
+
+    event_type = db.relationship('EventType', \
+            backref=db.backref('Events', lazy='dynamic'))
 
     def __init__(self, event_type_id, predicted_release_date=None, \
             predicted_textual_release_date=None):
@@ -19,7 +23,7 @@ class Event(db.Model):
 class EventType(db.Model):
     __tablename__ = 'EventTypes'
     event_type_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
+    name = db.Column(db.String(50), unique=True, nullable=False)
 
     def __init__(self, name):
         self.name = name
