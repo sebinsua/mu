@@ -133,8 +133,7 @@ CREATE TABLE UserEvents (
 	created					timestamp NOT NULL DEFAULT current_timestamp,
 	PRIMARY KEY (user_event_id),
 	FOREIGN KEY (user_id) REFERENCES Users,
-	FOREIGN KEY (event_id) REFERENCES Events,
-	FOREIGN KEY (user_event_status_id) REFERENCES UserEventStatuses
+	FOREIGN KEY (event_id) REFERENCES Events
 );
 
 CREATE TABLE ContentOwners (
