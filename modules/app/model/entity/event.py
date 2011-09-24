@@ -5,8 +5,8 @@ from datetime import datetime
 class Event(db.Model):
     __tablename__ = 'Events'
     event_id = db.Column(db.Integer, primary_key=True)
-    event_type_id = db.Column(db.Integer, nullable=False, \
-            db.ForeignKey('EventTypes.event_type_id'))
+    event_type_id = db.Column(db.Integer, \
+            db.ForeignKey('EventTypes.event_type_id'), nullable=False)
     predicted_release_date = db.Column(db.DateTime)
     predicted_textual_release_date = db.Column(db.Text)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())

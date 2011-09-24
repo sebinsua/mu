@@ -7,14 +7,14 @@ class Product(db.Model):
     product_id = db.Column(db.Integer, primary_key=True)
     work_id = db.Column(db.Integer, \
             db.ForeignKey('Works.work_id'))
-    product_type_id = db.Column(db.Integer, nullable=False, \
-            db.ForeignKey('ProductTypes.product_type_id'))
-    product_status_id  = db.Column(db.Integer, nullable=False, \
-            db.ForeignKey('ProductStatuses.product_status_id'))
-    product_medium_id = db.Column(db.Integer, nullable=False, \
-            db.ForeignKey('ProductMediums.product_medium_id'))
-    event_id = db.Column(db.Integer, nullable=False \
-            db.ForeignKey('Events.event_id'))
+    product_type_id = db.Column(db.Integer, \
+            db.ForeignKey('ProductTypes.product_type_id'), nullable=False)
+    product_status_id  = db.Column(db.Integer, \
+            db.ForeignKey('ProductStatuses.product_status_id'), nullable=False)
+    product_medium_id = db.Column(db.Integer, \
+            db.ForeignKey('ProductMediums.product_medium_id'), nullable=False)
+    event_id = db.Column(db.Integer, \
+            db.ForeignKey('Events.event_id'), nullable=False)
     title = db.Column(db.Text, nullable=False)
     sort_title = db.Column(db.String(50))
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())

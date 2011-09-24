@@ -22,10 +22,10 @@ class ContentAuthor(db.Model):
 
 class ContentAuthorProducts(db.Model):
     content_author_product_id = db.Column(db.Integer, primary_key=True)
-    content_author_id = db.Column(db.Integer, nullable=False, \
-            db.ForeignKey('ContentAuthors.content_author_id'))
-    product_id = db.Column(db.Integer, nullable=False, \
-            db.ForeignKey('Products.product_id'))
+    content_author_id = db.Column(db.Integer, \
+            db.ForeignKey('ContentAuthors.content_author_id'), nullable=False)
+    product_id = db.Column(db.Integer, \
+            db.ForeignKey('Products.product_id'), nullable=False)
     content_author_product_type_id = db.Column(db.Integer, \
             db.ForeignKey('ContentAuthorProductTypes.content_author_product_type_id'))
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())

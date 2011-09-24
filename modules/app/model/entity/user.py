@@ -67,10 +67,10 @@ class UserEventStatus(db.Model):
 class UserEvent(db.Model):
     __tablename__ = 'UserEvents'
     user_event_id = db.Column(db.Integer, primary_key=True)
-    user_id= db.Column(db.Integer, nullable=False, \
-            db.ForeignKey('Users.user_id'))
-    event_id= db.Column(db.Integer, nullable=False, \
-            db.ForeignKey('Events.event_id'))
+    user_id= db.Column(db.Integer, \
+            db.ForeignKey('Users.user_id'), nullable=False)
+    event_id= db.Column(db.Integer, \
+            db.ForeignKey('Events.event_id'), nullable=False)
     user_event_status_id = db.Column(db.Integer, \
             db.ForeignKey('UserEventStatuses.user_event_status_id'))
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())

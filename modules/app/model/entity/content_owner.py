@@ -31,10 +31,10 @@ class ContentOwnerProductType(db.Model):
 class ContentOwnerProducts(db.Model):
     __tablename__ = 'ContentOwnerProducts'
     content_owner_product_id = db.Column(db.Integer, primary_key=True)
-    content_owner_id = db.Column(db.Integer, nullable=False, \
-            db.ForeignKey('ContentOwners.content_owner_id'))
-    product_id = db.Column(db.Integer, nullable=False, \
-            db.ForeignKey('Products.product_id'))
+    content_owner_id = db.Column(db.Integer, \
+            db.ForeignKey('ContentOwners.content_owner_id'), nullable=False)
+    product_id = db.Column(db.Integer, \
+            db.ForeignKey('Products.product_id'), nullable=False)
     content_owner_product_type_id = db.Column(db.Integer, \
             db.ForeignKey('ContentOwnerProductTypes.content_owner_product_type_id'))
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
