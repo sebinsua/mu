@@ -18,8 +18,11 @@ def login_user():
         user_repository = UserRepository()
         user_domain.user_repository = user_repository
 
+        user_identity = request.form.get('user_identity')
+        password = request.form.get('password')
+
         try:
-            if user_domain.login(request.form):
+            if user_domain.login(user_identity, password):
                 # TODO: It would actually be better to redirect to the original page
                 # we were on by passing this via request.form
                 return redirect("/")
@@ -46,8 +49,12 @@ def register_user():
         from mu.model.repository.user import UserRepository
         user_domain.user_repository = UserRepository()
 
+        email = request.form.get('email')
+        username = request.form.get('username', default=email)
+        password = request.form.get('password')
+
         try:
-            user_id = user_domain.register(request.form, force_login=True)
+            user_id = user_domain.register(email, username, password, force_login=True)
             flash("Thanks for registering!", "success")
             return redirect("/")
         except Exception, e:

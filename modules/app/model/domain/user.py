@@ -6,12 +6,8 @@ class UserDomain:
     def __init__(self, user_repository=None):
         self.user_repository = user_repository
 
-    def register(self, form_data, force_login=False):
+    def register(self, email, username, password, force_login=False):
         from mu.model.entity.user import User
-
-        email = form_data.get('email')
-        username = form_data.get('username', default=email)
-        password = form_data.get('password')
         user = User(username, email, password)
 
         user_id = self.user_repository.add_user(user)
@@ -19,10 +15,7 @@ class UserDomain:
             self.force_login(user_id)
         return user_id
 
-    def login(self, form_data):
-        user_identity = form_data.get('user_identity')
-        password = form_data.get('password')
-
+    def login(self, user_identity, password):
         user = self.user_repository.fetch_user_with_identity(user_identity)
 
         if user.check_password(password):

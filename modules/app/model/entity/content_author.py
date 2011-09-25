@@ -15,8 +15,7 @@ class ContentAuthor(db.Model):
 
     products = association_proxy('ContentAuthorProducts', 'Products')
 
-    def __init__(self, name, musicbrainz_mbid=None, \
-        start_date=None, end_date=None):
+    def __init__(self, name, musicbrainz_mbid=None, start_date=None, end_date=None):
         self.musicbrainz_mbid = musicbrainz_mbid
         self.name = name
         self.sort_name = name[:50]
@@ -40,8 +39,7 @@ class ContentAuthorProducts(db.Model):
     content_author_product_type = db.relationship('ContentAuthorProductType', \
             uselist=False, backref=db.backref('ContentAuthorProducts', lazy='dynamic'))
 
-    def __init__(self, content_author_id, product_id, \
-            content_author_product_type_id=None):
+    def __init__(self, content_author_id, product_id, content_author_product_type_id=None):
         self.content_author_id = content_author_id
         self.product_id = product_id
         self.content_author_product_type_id = content_author_product_type_id

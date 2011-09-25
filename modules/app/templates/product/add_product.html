@@ -1,0 +1,21 @@
+{% from "helper/core.html" import output_flashed_messages %}
+{% from "helper/form.html" import render_field %}
+{% extends layout_template if layout_template is defined else "main-layout.html" %}
+
+{% block content %}
+  <h1>Product</h1>
+  {{ output_flashed_messages() }}
+  <form method="POST" action="/add/{{ product_type }}/to/{{ content_author }}">
+    {{ form.csrf }}
+    <dl>
+        {{ render_field(form.content_author) }}
+        {{ render_field(form.content_owner) }}
+        {{ render_field(form.event_release_date) }}
+        {{ render_field(form.product_title) }}
+        {{ render_field(form.product_type) }}
+        {{ render_field(form.product_status) }}
+        {{ render_field(form.product_medium) }}
+    </dl>
+    <input type="submit" value="Add" />
+  </form>
+{% endblock %}

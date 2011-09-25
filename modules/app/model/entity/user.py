@@ -21,6 +21,7 @@ class User(db.Model):
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
     events = association_proxy('UserEvents', 'Events')
+    content_authors = association_proxy('UserContentAuthors', 'ContentAuthors')
 
     def __init__(self, username, email, password, first_name=None, \
             last_name=None, gender=None, date_of_birth=None, summary=None):

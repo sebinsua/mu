@@ -1,5 +1,8 @@
 from helper.database import db
 
+from mu.model.entity.event import Event
+from mu.model.entity.work import Work
+
 from datetime import datetime
 
 class Product(db.Model):
@@ -30,8 +33,8 @@ class Product(db.Model):
     event = db.relationship('Event', uselist=False, \
             backref=db.backref('Products', lazy='dynamic', uselist=False))
 
-    def __init__(self, title, product_type_id, product_status_id, \
-            event_id, product_medium_id=None, work_id=None):
+    def __init__(self, title, event_id, product_type_id=None, \
+            product_status_id=None, product_medium_id=None, work_id=None):
         self.work_id = work_id
         self.product_type_id = product_type_id
         self.product_status_id = product_status_id

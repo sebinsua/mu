@@ -1,5 +1,6 @@
 {% extends layout_template if layout_template is defined else "main-layout.html" %}
 
 {% block content %}
-  <h1>Products</h1>
+    <h1>Products</h1>
+    <div>{{ products|safe }}</div>
 {% endblock %}
