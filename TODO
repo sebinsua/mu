@@ -1,5 +1,7 @@
-01. Write code to output releases directly to the page as text. Ugly but the boiler plate code is starting to work!
-02. Write code to input releases in (a) bulk and (b) singularly.
+01. Pivot: can we change products to actions of outputting a product? Can we remove the word Content from places. This allows us to track data other than media in the future: rumours of all types.
+02. Are we able to search on PickleType. No? Can we search on fuzzy temporal data? It would be good if we could. What maths do we use for the certainty?
+03. Write code to output releases directly to the page as text. Ugly but the boiler plate code is starting to work!
+04. Write code to input releases in (a) bulk and (b) singularly.
 
 LOW PRIORITY:
 01. Leave this until I know a better way: generate body classes from macro; generate title from macro.
