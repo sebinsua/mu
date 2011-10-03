@@ -1,10 +1,10 @@
-01. Pivot: can we change products to actions of outputting a product? Can we remove the word Content from places. This allows us to track data other than media in the future: rumours of all types.
-02. Are we able to search on PickleType. No? Can we search on fuzzy temporal data? It would be good if we could. What maths do we use for the certainty?
-03. Write code to output releases directly to the page as text. Ugly but the boiler plate code is starting to work!
-04. Write code to input releases in (a) bulk and (b) singularly.
+01. The database has now changed.
+    Make sure code reflects this.
+And then:
+03. Update code to output releases directly to the page as text. Ugly but the boiler plate code is starting to work!
+04. Update code to input releases in (a) bulk and (b) singularly.
+05. Think simplicity of twitter in style and in function. How basic can I make it? Draw a mockup.
 
 LOW PRIORITY:
 01. Leave this until I know a better way: generate body classes from macro; generate title from macro.
-02. Database changes should happen depending on when they are needed. What exists should suffice for now.
-03. Begin to use some test-suite to test the basic functionality I've created.
-04. Find some way of making sure postgres is started on MacOSX. Consider using StackExchange since I've tried for ages already...
+02. Begin to use some test-suite to test the basic functionality I've created.

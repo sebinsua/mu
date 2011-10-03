@@ -1,9 +1,9 @@
 -- mu
 -- database defaults v0.02
 
--- default ContentAuthorProductTypes
+-- default AgentTypes
 -- NOTE: It is possible for a content author to be a songwriter for one product, and the lead singer for another.
-INSERT INTO "ContentAuthorProductTypes" (name) VALUES ('Artist');
+INSERT INTO "AgentTypes" (name) VALUES ('Artist');
 
 -- default ContentAuthorTypes
 -- TODO: There needs to be some way of (1) storing different people against one artist, or (2) featuring people against
@@ -19,7 +19,7 @@ INSERT INTO "ContentOwnerProductTypes" (name) VALUES ('Original Production'), ('
 
 -- default EventTypes
 -- NOTE: I don't think we need to do more than an implicit list of (type: Event) products against a work to symbolise a festival.
-INSERT INTO "EventTypes" (name) VALUES ('Release'), ('Performance');
+INSERT INTO "EventTypes" (name) VALUES ('Release'), ('Performance'), ('Other');
 
 -- default ProductTypes
 INSERT INTO "ProductTypes" (name) VALUES ('Event'), ('Album'), ('EP'), ('Single');

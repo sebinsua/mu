@@ -21,25 +21,35 @@ CREATE TABLE "Users" (
   UNIQUE (username)
 );
 
-CREATE TABLE "ContentAuthors" (
-	content_author_id	serial,
+CREATE TABLE "AgentTypes" (
+	agent_type_id	serial,
+	name							varchar(50) NOT NULL,
+	PRIMARY KEY (agent_type_id),
+	UNIQUE (name)
+);
+
+CREATE TABLE "Agents" (
+	agent_id	serial,
+  agent_type_id integer NOT NULL,
 	musicbrainz_mbid	char(36),
 	name				text NOT NULL,
 	sort_name			varchar(50),
-	start_date		date,
-	end_date			date,
 	created				timestamp NOT NULL DEFAULT current_timestamp,
-	PRIMARY KEY (content_author_id)
+	PRIMARY KEY (agent_id),
+  FOREIGN KEY (agent_type_id) REFERENCES "AgentTypes"
 );
 
-CREATE TABLE "UserContentAuthors" (
-	user_content_author_id	serial,
+-- TODO: Maybe at some point we could add a user_agent_type_id which
+-- would allow us to define the difference between a user following other
+-- agents and BEING one.
+CREATE TABLE "UserAgents" (
+	user_agent_id	serial,
 	user_id					integer NOT NULL,
-	content_author_id		integer NOT NULL,
+	agent_id		integer NOT NULL,
 	created					timestamp NOT NULL DEFAULT current_timestamp,
-	PRIMARY KEY (user_content_author_id),
+	PRIMARY KEY (user_agent_id),
 	FOREIGN KEY (user_id) REFERENCES "Users",
-	FOREIGN KEY (content_author_id) REFERENCES "ContentAuthors"
+	FOREIGN KEY (agent_id) REFERENCES "Agents"
 );
 
 CREATE TABLE "EventTypes" (
@@ -49,11 +59,15 @@ CREATE TABLE "EventTypes" (
 	UNIQUE (name)
 );
 
+-- TODO: There is a nicer way of dealing with fuzzy temporal data which I shall
+-- come up with.
 CREATE TABLE "Events" (
 	event_id	serial,
 	event_type_id	integer NOT NULL,
-	predicted_release_date			timestamp,
-	predicted_textual_release_date	text,
+	predicted_start_release_date			timestamp,
+	predicted_end_release_date        timestamp,
+  predicted_textual_release_date	text,
+  certainty integer,
   created		timestamp NOT NULL DEFAULT current_timestamp,
 	PRIMARY KEY (event_id),
 	FOREIGN KEY (event_type_id) REFERENCES "EventTypes"
@@ -106,23 +120,24 @@ CREATE TABLE "Products" (
   FOREIGN KEY (event_id) REFERENCES "Events"
 );
 
-CREATE TABLE "ContentAuthorProductTypes" (
-	content_author_product_type_id	serial,
-	name							varchar(50) NOT NULL,
-	PRIMARY KEY (content_author_product_type_id),
-	UNIQUE (name)
+CREATE TABLE "Actions" (
+  action_id   serial,
+  event_id    integer NOT NULL,
+  description text NOT NULL,
+  PRIMARY KEY (action_id),
+  FOREIGN KEY (event_id) REFERENCES "Events"
 );
 
-CREATE TABLE "ContentAuthorProducts" (
-	content_author_product_id		serial,
-	content_author_id				integer NOT NULL,
-	product_id						integer NOT NULL,
-	content_author_product_type_id	integer,
+CREATE TABLE "AgentEvents" (
+	agent_event_id		  serial,
+	agent_id				    integer NOT NULL,
+	event_id						integer NOT NULL,
+	agent_type_id     	integer,
 	created							timestamp NOT NULL DEFAULT current_timestamp,
-	PRIMARY KEY (content_author_product_id),
-	FOREIGN KEY (content_author_id) REFERENCES "ContentAuthors",
-	FOREIGN KEY (product_id)	REFERENCES "Products",
-	FOREIGN KEY (content_author_product_type_id) REFERENCES "ContentAuthorProductTypes"
+	PRIMARY KEY (agent_event_id),
+	FOREIGN KEY (agent_id) REFERENCES "Agents",
+	FOREIGN KEY (event_id)	REFERENCES "Events",
+	FOREIGN KEY (agent_type_id) REFERENCES "AgentTypes"
 );
 
 CREATE TABLE "UserEvents" (
