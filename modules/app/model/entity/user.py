@@ -21,7 +21,7 @@ class User(db.Model):
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
     events = association_proxy('UserEvents', 'Events')
-    content_authors = association_proxy('UserContentAuthors', 'ContentAuthors')
+    agents = association_proxy('UserAgents', 'Agents')
 
     def __init__(self, username, email, password, first_name=None, \
             last_name=None, gender=None, date_of_birth=None, summary=None):
@@ -41,23 +41,23 @@ class User(db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-class UserContentAuthor(db.Model):
-    __tablename__ = 'UserContentAuthors'
-    user_content_author_id = db.Column(db.Integer, primary_key=True)
+class UserAgent(db.Model):
+    __tablename__ = 'UserAgents'
+    user_agent_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, nullable=False,
             db.ForeignKey('Users.user_id'))
-    content_author_id = db.Column(db.Integer, nullable=False, \
-            db.ForeignKey('ContentAuthors.content_author_id'))
+    agent_id = db.Column(db.Integer, nullable=False, \
+            db.ForeignKey('Agents.agent_id'))
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
     user = db.relationship('User', uselist=False, \
-            backref=db.backref('UserContentAuthors', lazy='dynamic'))
-    content_author = db.relationship('ContentAuthor', uselist=False, \
-            backref=db.backref('UserContentAuthors', lazy='dynamic'))
+            backref=db.backref('UserAgents', lazy='dynamic'))
+    content_author = db.relationship('Agent', uselist=False, \
+            backref=db.backref('UserAgents', lazy='dynamic'))
 
-    def __init__(self, user_id, content_author_id):
+    def __init__(self, user_id, agent_id):
         self.user_id = user_id
-        self.content_author_id = content_author_id
+        self.agent_id = agent_id
 
 class UserEvent(db.Model):
     __tablename__ = 'UserEvents'
