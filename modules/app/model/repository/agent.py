@@ -1,13 +1,13 @@
 from helper.database import db
 
-class ContentAuthorRepository:
-    def add_content_author(self, content_author):
-        db.session.add(content_author)
+class AgentRepository:
+    def add_agent(self, agent):
+        db.session.add(agent)
         db.session.commit()
-        return content_author.content_author_id
+        return agent.agent_id
 
-    def link_product_to_content_author(self, content_author_id, product_id):
-        from mu.model.entity.content_author import ContentAuthorProduct
-        content_author_product = ContentAuthorProduct(content_author_id, product_id)
+    def link_product_to_agent(self, agent_id, product_id):
+        from mu.model.entity.agent import AgentProduct
+        agent_product = AgentProduct(agent_id, product_id)
         # TODO: What about the content author product type!
-        return content_author_product.content_author_product_id
+        return agent_product.agent_product_id
