@@ -3,17 +3,17 @@ from flask import session
 class ProductDomain:
     product_repository = None
     event_repository = None
-    content_author_repository = None
+    agent_repository = None
     content_owner_repository = None
 
     def __init__(self, product_repository=None, event_repository=None, \
-            content_author_repository=None, content_owner_repository=None):
+            agent_repository=None, content_owner_repository=None):
         self.product_repository = product_repository
         self.event_repository = event_repository
-        self.content_author_repository = content_author_repository
+        self.agent_repository = agent_repository
         self.content_owner_repository = content_owner_repository
 
-    def add_product(self, content_author_name, event_release_date, \
+    def add_product(self, agent_name, event_release_date, \
             product_title, product_type_id=None, product_status_id=None, \
             product_medium_id=None, content_owner_name=None):
         # event_type_id needs to be set depending on the product_type_id
@@ -32,11 +32,11 @@ class ProductDomain:
         product_id = self.product_repository.add_product(product)
 
         # Add a ContentAuthor
-        from mu.model.entity.content_author import ContentAuthor
-        content_author = ContentAuthor(content_author_name)
+        from mu.model.entity.agent import Agent
+        agent = Agent(agent_name)
         # TODO: musicbrainz_mbid, start_date and end_date can be None or fetched from musicbrainz.
-        content_author_id = self.content_author_repository.add_content_author(content_author)
-        self.content_author_repository.link_product_to_content_author(content_author_id, product_id)
+        agent_id = self.agent_repository.add_agent(agent)
+        self.agent_repository.link_product_to_agent(agent_id, product_id)
 
         # Optionally add a ContentOwner
         if content_owner_name:

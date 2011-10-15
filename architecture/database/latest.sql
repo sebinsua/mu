@@ -122,18 +122,23 @@ CREATE TABLE "Products" (
 
 CREATE TABLE "Actions" (
   action_id   serial,
-  event_id    integer NOT NULL,
+  agent_event_id    integer NOT NULL,
   description text NOT NULL,
   PRIMARY KEY (action_id),
-  FOREIGN KEY (event_id) REFERENCES "Events"
+  FOREIGN KEY (agent_event_id) REFERENCES "AgentEvents"
 );
 
+-- NOTE: agent_order is used to assign some 'order' to a list
+-- of agents against an event. E.g. an importance. It is used on
+-- addition to agent_type_id to help distinguish agents.
 CREATE TABLE "AgentEvents" (
-	agent_event_id		  serial,
-	agent_id				    integer NOT NULL,
-	event_id						integer NOT NULL,
+	agent_event_id		serial,
+	agent_id			integer NOT NULL,
+	agent_order         integer,
 	agent_type_id     	integer,
-	created							timestamp NOT NULL DEFAULT current_timestamp,
+    event_id            integer NOT NULL,
+    certainty           integer NOT NULL DEFAULT '50',
+    created				timestamp NOT NULL DEFAULT current_timestamp,
 	PRIMARY KEY (agent_event_id),
 	FOREIGN KEY (agent_id) REFERENCES "Agents",
 	FOREIGN KEY (event_id)	REFERENCES "Events",
@@ -144,7 +149,7 @@ CREATE TABLE "UserEvents" (
 	user_event_id			serial,
 	user_id					integer NOT NULL,
 	event_id				integer NOT NULL,
-	certainty     	integer NOT NULL,
+	certainty     	integer NOT NULL DEFAULT '100',
 	created					timestamp NOT NULL DEFAULT current_timestamp,
 	PRIMARY KEY (user_event_id),
 	FOREIGN KEY (user_id) REFERENCES "Users",

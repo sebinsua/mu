@@ -1,6 +1,6 @@
-from flask import Blueprint, session
+from flask import Blueprint, session, render_template
 bp = Blueprint('home', __name__)
 
 @bp.route("/")
 def show_home():
-    return "Index page"
+    return render_template("home.html")
