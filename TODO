@@ -1,10 +1,8 @@
-01. The database has now changed.
-    Make sure code reflects this.
-And then:
-03. Update code to output releases directly to the page as text. Ugly but the boiler plate code is starting to work!
-04. Update code to input releases in (a) bulk and (b) singularly.
-05. Think simplicity of twitter in style and in function. How basic can I make it? Draw a mockup.
-
-LOW PRIORITY:
-01. Leave this until I know a better way: generate body classes from macro; generate title from macro.
-02. Begin to use some test-suite to test the basic functionality I've created.
+01. The database has now changed. Make sure code reflects this. Am I making the mistake of similar abstraction on similar abstraction aka reinventing the wheel?
+02. Use less objects and patterns when they are not required. It's just bloat and there is no type safety to worry about anyway.
+03. Think about how to separate services and follow 12 factor web app way. Can we use RabbitMQ/Celery to separate these. When?
+04. Take a look at the muspy code. Am I conceptually fucking anything up?
+05. Update code to output releases directly to the page as text. Ugly but the boiler plate code is starting to work!
+06. Update code to input releases in (a) bulk and (b) singularly.
+07. Think simplicity of twitter in style and in function. How basic can I make it? Draw a mockup.
+08. Begin to use some test-suite to test the basic functionality I've created.
