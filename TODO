@@ -1,7 +1,8 @@
-01. Add comments; remove objects and patterns when they are not required. It's just bloat and there is no type safety to worry about anyway.
-03. Think about how to separate services and follow 12 factor web app way. Can we use RabbitMQ/Celery to separate these. When?
-04. Create some Flask test-suites.
+01. Update code to output releases directly to the page as text. Ugly but the boiler plate code is starting to work!
+02. Update code to input releases in (a) bulk and (b) singularly.
 -------------------------------------------------------------------------------
-05. Update code to output releases directly to the page as text. Ugly but the boiler plate code is starting to work!
-06. Update code to input releases in (a) bulk and (b) singularly.
-07. Think simplicity of twitter in style and in function. How basic can I make it? Draw a mockup.
+01. Think simplicity of twitter in style and in function. How basic can I make it? Draw a mockup.
+-------------------------------------------------------------------------------
+01. Add comments.
+02. Think about how to separate services and follow 12 factor web app way. Can we use RabbitMQ/Celery to separate these?
+03. Create unit tests.

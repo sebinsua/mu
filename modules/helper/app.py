@@ -42,3 +42,13 @@ def get_app():
 
     # This next line should never be run.
     return False
+
+def get_tests():
+    APPLICATION_NAME = get_app_name()
+    try:
+        tests = import_module(APPLICATION_NAME + '.test')
+        return tests
+    except ImportError:
+        APPLICATION_NAME = 'app'
+        tests = import_module(APPLICATION_NAME + '.test')
+        return tests

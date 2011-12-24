@@ -13,6 +13,7 @@ modules = cwd + "/modules/"
 if modules not in sys.path:
     sys.path.append(modules)
 
-from helper.app import run_tests
+from helper.app import get_tests
 if __name__ == "__main__":
-    run_tests()
+    tests = get_tests()
+    tests.run()
