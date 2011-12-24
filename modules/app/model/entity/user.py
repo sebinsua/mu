@@ -7,7 +7,7 @@ import uuid
 from flaskext.bcrypt import generate_password_hash, check_password_hash
 
 class User(db.Model):
-    __tablename__ = 'Users'
+    __tablename__ = 'User'
     user_id = db.Column(db.Integer, primary_key=True)
     uuid = db.Column(db.String(100), unique=True, nullable=False)
     email = db.Column(db.Text, unique=True)
@@ -20,8 +20,8 @@ class User(db.Model):
     summary = db.Column(db.Text)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
-    events = association_proxy('UserEvents', 'Events')
-    agents = association_proxy('UserAgents', 'Agents')
+    events = association_proxy('UserEvent', 'Event')
+    agents = association_proxy('UserAgent', 'Agent')
 
     def __init__(self, username, email, password, first_name=None, \
             last_name=None, gender=None, date_of_birth=None, summary=None):
@@ -42,37 +42,35 @@ class User(db.Model):
         return check_password_hash(self.password_hash, password)
 
 class UserAgent(db.Model):
-    __tablename__ = 'UserAgents'
+    __tablename__ = 'UserAgent'
     user_agent_id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, nullable=False,
-            db.ForeignKey('Users.user_id'))
-    agent_id = db.Column(db.Integer, nullable=False, \
-            db.ForeignKey('Agents.agent_id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('User.user_id'), nullable=False)
+    agent_id = db.Column(db.Integer, db.ForeignKey('Agent.agent_id'), nullable=False)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
     user = db.relationship('User', uselist=False, \
-            backref=db.backref('UserAgents', lazy='dynamic'))
-    content_author = db.relationship('Agent', uselist=False, \
-            backref=db.backref('UserAgents', lazy='dynamic'))
+            backref=db.backref('UserAgent', lazy='dynamic'))
+    # from mu.model.entity.agent import Agent
+    # content_author = db.relationship('Agent', uselist=False, \
+    #         backref=db.backref('UserAgent', lazy='dynamic'))
 
     def __init__(self, user_id, agent_id):
         self.user_id = user_id
         self.agent_id = agent_id
 
 class UserEvent(db.Model):
-    __tablename__ = 'UserEvents'
+    __tablename__ = 'UserEvent'
     user_event_id = db.Column(db.Integer, primary_key=True)
-    user_id= db.Column(db.Integer, \
-            db.ForeignKey('Users.user_id'), nullable=False)
-    event_id= db.Column(db.Integer, \
-            db.ForeignKey('Events.event_id'), nullable=False)
+    user_id= db.Column(db.Integer, db.ForeignKey('User.user_id'), nullable=False)
+    event_id= db.Column(db.Integer, db.ForeignKey('Event.event_id'), nullable=False)
     certainty = db.Column(db.Integer, nullable=False)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
     user = db.relationship('User', uselist=False, \
-            backref=db.backref('UserEvents', lazy='dynamic'))
-    event = db.relationship('Event', uselist=False, \
-            backref=db.backref('UserEvents', lazy='dynamic'))
+            backref=db.backref('UserEvent', lazy='dynamic'))
+    # from mu.model.entity.event import Event
+    # event = db.relationship('Event', uselist=False, \
+    #         backref=db.backref('UserEvent', lazy='dynamic'))
 
     def __init__(self, user_id, event_id, user_event_status_id=None):
         self.user_id = user_id

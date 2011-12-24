@@ -14,10 +14,6 @@ def login_user():
     login_form = LoginForm(request.form)
 
     if request.method == "POST" and login_form.validate():
-        from mu.model.repository.user import UserRepository
-        user_repository = UserRepository()
-        user_domain.user_repository = user_repository
-
         user_identity = request.form.get('user_identity')
         password = request.form.get('password')
 
@@ -46,9 +42,6 @@ def register_user():
     if request.method == "POST" and registration_form.validate():
         # We only need to access the UserDomain when we are passed
         # POST data with which to attempt user registration.
-        from mu.model.repository.user import UserRepository
-        user_domain.user_repository = UserRepository()
-
         email = request.form.get('email')
         username = request.form.get('username', default=email)
         password = request.form.get('password')

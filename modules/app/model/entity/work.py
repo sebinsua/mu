@@ -3,7 +3,7 @@ from helper.database import db
 from datetime import datetime
 
 class Work(db.Model):
-    __tablename__ = 'Works'
+    __tablename__ = 'Work'
     work_id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.Text, nullable=False)
     sort_title = db.Column(db.String(50))

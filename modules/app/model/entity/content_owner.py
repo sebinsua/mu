@@ -4,7 +4,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from datetime import datetime
 
 class ContentOwner(db.Model):
-    __tablename__ = 'ContentOwners'
+    __tablename__ = 'ContentOwner'
     content_owner_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text, nullable=False)
     sort_name = db.Column(db.String(50))
@@ -12,7 +12,7 @@ class ContentOwner(db.Model):
     end_date = db.Column(db.DateTime)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
-    products = association_proxy('ContentOwnerProducts', 'Products')
+    products = association_proxy('ContentOwnerProduct', 'Product')
 
     def __init__(self, name, start_date=None, end_date=None):
         self.name = name
@@ -21,7 +21,7 @@ class ContentOwner(db.Model):
         self.end_date = end_date
 
 class ContentOwnerProductType(db.Model):
-    __tablename__ = 'ContentOwnerProductTypes'
+    __tablename__ = 'ContentOwnerProductType'
     content_owner_product_type_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
 
@@ -32,22 +32,19 @@ class ContentOwnerProductType(db.Model):
         return '<ContentOwnerProductType %r>' % self.name
 
 class ContentOwnerProduct(db.Model):
-    __tablename__ = 'ContentOwnerProducts'
+    __tablename__ = 'ContentOwnerProduct'
     content_owner_product_id = db.Column(db.Integer, primary_key=True)
-    content_owner_id = db.Column(db.Integer, \
-            db.ForeignKey('ContentOwners.content_owner_id'), nullable=False)
-    product_id = db.Column(db.Integer, \
-            db.ForeignKey('Products.product_id'), nullable=False)
-    content_owner_product_type_id = db.Column(db.Integer, \
-            db.ForeignKey('ContentOwnerProductTypes.content_owner_product_type_id'))
+    content_owner_id = db.Column(db.Integer, db.ForeignKey('ContentOwner.content_owner_id'), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey('Product.product_id'), nullable=False)
+    content_owner_product_type_id = db.Column(db.Integer, db.ForeignKey('ContentOwnerProductType.content_owner_product_type_id'))
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
-    content_owner = db.relationship('ContentOwners', uselist=False, \
-            backref=db.backref('ContentOwnerProducts', lazy='dynamic'))
-    product = db.relationship('Products', uselist=False, \
-            backref=db.backref('ContentOwnerProducts', lazy='dynamic'))
+    content_owner = db.relationship('ContentOwner', uselist=False, \
+            backref=db.backref('ContentOwnerProduct', lazy='dynamic'))
+    product = db.relationship('Product', uselist=False, \
+            backref=db.backref('ContentOwnerProduct', lazy='dynamic'))
     content_owner_product_type = db.relationship('ContentOwnerProductType', \
-            uselist=False, backref=db.backref('ContentOwnerProductTypes', lazy='dynamic'))
+            uselist=False, backref=db.backref('ContentOwnerProductType', lazy='dynamic'))
 
     def __init__(self, content_owner_id, product_id, \
             content_owner_product_type_id=None):

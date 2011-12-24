@@ -1,14 +1,8 @@
 from flask import Blueprint, request, redirect, flash, render_template
 from mu.model.domain.product import ProductDomain
 
-from mu.model.repository.product import ProductRepository
-from mu.model.repository.event import EventRepository
-from mu.model.repository.agent import AgentRepository
-from mu.model.repository.content_owner import ContentOwnerRepository
-
 bp = Blueprint('product', __name__)
-product_domain = ProductDomain(ProductRepository(), EventRepository(), \
-        ContentAuthorRepository(), ContentOwnerRepository())
+product_domain = ProductDomain()
 
 # NOTE: A product may be an event!
 
@@ -27,9 +21,12 @@ def show_products(product_type):
 @bp.route("/add/<product_type>", methods=['GET', 'POST'])
 @bp.route("/add/<product_type>/to/<agent>", methods=['GET', 'POST'])
 def add_product_to_content_author(product_type, agent=None):
-    product_types = product_domain.product_repository.fetch_product_types()
-    product_statuses = product_domain.product_repository.fetch_product_statuses()
-    product_mediums = product_domain.product_repository.fetch_product_mediums()
+    from mu.model.repository.product import fetch_product_types, \
+                                            fetch_product_statuses, \
+                                            fetch_product_mediums
+    product_types = fetch_product_types()
+    product_statuses = fetch_product_statuses()
+    product_mediums = fetch_product_mediums()
 
     from mu.form.add_product import AddProductForm
     add_product_form = AddProductForm(request.form)

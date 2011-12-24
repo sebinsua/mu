@@ -1,6 +1,4 @@
-01. Update the database with new knowledge. Am I making mistakes: similar abstraction on similar abstraction aka reinventing the wheel?
-    Take a look at muspy. Am I making any conceptual fuckups?
-02. Remove objects and patterns when they are not required. It's just bloat and there is no type safety to worry about anyway.
+01. Add comments; remove objects and patterns when they are not required. It's just bloat and there is no type safety to worry about anyway.
 03. Think about how to separate services and follow 12 factor web app way. Can we use RabbitMQ/Celery to separate these. When?
 04. Create some Flask test-suites.
 -------------------------------------------------------------------------------

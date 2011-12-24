@@ -4,7 +4,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from datetime import datetime
 
 class Agent(db.Model):
-    __tablename__ = 'Agents'
+    __tablename__ = 'Agent'
     agent_id = db.Column(db.Integer, primary_key=True)
     agent_type_id = db.Column(db.Integer)
     musicbrainz_mbid = db.Column(db.String(36))
@@ -12,7 +12,7 @@ class Agent(db.Model):
     sort_name = db.Column(db.String(50))
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
-    events = association_proxy('AgentEvents', 'Events')
+    events = association_proxy('AgentEvent', 'Event')
 
     def __init__(self, name, agent_typei_id=None, musicbrainz_mbid=None):
         self.musicbrainz_mbid = musicbrainz_mbid
@@ -21,20 +21,17 @@ class Agent(db.Model):
 
 class AgentEvent(db.Model):
     agent_event_id = db.Column(db.Integer, primary_key=True)
-    agent_id = db.Column(db.Integer, \
-            db.ForeignKey('Agents.agent_id'), nullable=False)
-    event_id = db.Column(db.Integer, \
-            db.ForeignKey('Events.event_id'), nullable=False)
-    agent_type_id = db.Column(db.Integer, \
-            db.ForeignKey('AgentTypes.agent_type_id'))
+    agent_id = db.Column(db.Integer, db.ForeignKey('Agent.agent_id'), nullable=False)
+    event_id = db.Column(db.Integer, db.ForeignKey('Event.event_id'), nullable=False)
+    agent_type_id = db.Column(db.Integer, db.ForeignKey('AgentType.agent_type_id'))
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
     agent = db.relationship('Agent', uselist=False, \
-            backref=db.backref('AgentEvents', lazy='dynamic'))
+            backref=db.backref('AgentEvent', lazy='dynamic'))
     event = db.relationship('Event', uselist=False, \
-            backref=db.backref('AgentEvents', lazy='dynamic'))
+            backref=db.backref('AgentEvent', lazy='dynamic'))
     agent_type = db.relationship('AgentType', \
-            uselist=False, backref=db.backref('AgentEvents', lazy='dynamic'))
+            uselist=False, backref=db.backref('AgentEvent', lazy='dynamic'))
 
     def __init__(self, agent_id, event_id, agent_type_id=None):
         self.agent_id = agent_id
@@ -42,7 +39,7 @@ class AgentEvent(db.Model):
         self.agent_type_id = agent_type_id
 
 class AgentType(db.Model):
-    __tablename__ = 'AgentTypes'
+    __tablename__ = 'AgentType'
     agent_type_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
 
