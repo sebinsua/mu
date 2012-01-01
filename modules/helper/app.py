@@ -20,7 +20,7 @@ def load_app():
 
 def get_app_name():
     try:
-        f = open(os.getcwd() + '/APPLICATION_NAME')
+        f = open(os.getcwd() + '/service_name')
         APPLICATION_NAME = f.read().strip();
     except IOError:
         pass

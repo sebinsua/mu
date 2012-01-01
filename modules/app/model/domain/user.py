@@ -15,7 +15,7 @@ class UserDomain:
     def login(self, user_identity, password):
         user = fetch_user_with_identity(user_identity)
 
-        if check_password(password):
+        if user is not None and user.check_password(password):
             session['uuid'] = user.uuid
             return True
         return False
