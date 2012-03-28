@@ -15,7 +15,7 @@ class Event(db.Model):
     event_type = db.relationship('EventType', uselist=False, \
             backref=db.backref('Event', lazy='dynamic'))
 
-    def __init__(self, event_type_id, certainty, predicted_textual_release_date=None, \
+    def __init__(self, event_type_id, certainty=100, predicted_textual_release_date=None, \
             predicted_start_release_date=None, predicted_end_release_date=None):
         self.event_type_id = event_type_id
         self.certainty = certainty

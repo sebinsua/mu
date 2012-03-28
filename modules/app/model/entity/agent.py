@@ -6,7 +6,7 @@ from datetime import datetime
 class Agent(db.Model):
     __tablename__ = 'Agent'
     agent_id = db.Column(db.Integer, primary_key=True)
-    agent_type_id = db.Column(db.Integer)
+    agent_type_id = db.Column(db.Integer) # TODO: There is duplication in AgentEvent. Copy imdb here...
     musicbrainz_mbid = db.Column(db.String(36))
     name = db.Column(db.Text, nullable=False)
     sort_name = db.Column(db.String(50))
@@ -14,10 +14,11 @@ class Agent(db.Model):
 
     events = association_proxy('AgentEvent', 'Event')
 
-    def __init__(self, name, agent_typei_id=None, musicbrainz_mbid=None):
+    def __init__(self, name, agent_type_id=None, musicbrainz_mbid=None):
         self.musicbrainz_mbid = musicbrainz_mbid
         self.name = name
         self.sort_name = name[:50]
+        self.agent_type_id = agent_type_id
 
 class AgentEvent(db.Model):
     agent_event_id = db.Column(db.Integer, primary_key=True)

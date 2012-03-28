@@ -3,10 +3,13 @@
 {% extends layout_template if layout_template is defined else "main-layout.html" %}
 
 {% block content %}
-<h1>Login</h1>
+  <h1>Login</h1>
   {{ output_flashed_messages() }}
   <form method="POST" action="/login">
     {{ form.csrf }}
+    {% if form.next.data != '' %}
+      {{ form.next }}
+    {% endif %}
     <dl>
       {{ render_field(form.user_identity) }}
       {{ render_field(form.password) }}

@@ -5,16 +5,17 @@
 {% block content %}
   <h1>Product</h1>
   {{ output_flashed_messages() }}
-  <form method="POST" action="/add/{{ product_type }}/to/{{ content_author }}">
+  <form method="POST" action="/add/{{ product_type }}{% if content_author
+      %}/to/{{ content_author }}{% endif %}">
     {{ form.csrf }}
     <dl>
-        {{ render_field(form.content_author) }}
-        {{ render_field(form.content_owner) }}
-        {{ render_field(form.event_release_date) }}
-        {{ render_field(form.product_title) }}
-        {{ render_field(form.product_type) }}
-        {{ render_field(form.product_status) }}
-        {{ render_field(form.product_medium) }}
+        {{ render_field(form.artist) }}
+        {{ render_field(form.label) }}
+        {{ render_field(form.release_date) }}
+        {{ render_field(form.title) }}
+        {{ render_field(form.type) }}
+        {{ render_field(form.status) }}
+        {{ render_field(form.medium) }}
     </dl>
     <input type="submit" value="Add" />
   </form>

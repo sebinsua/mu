@@ -1,10 +1,14 @@
-from flaskext.wtf import Form, TextField, SelectField, validators
+from flaskext.wtf import Form, TextField, QuerySelectField, validators
+from mu.model.entity.product import ProductType, ProductStatus, ProductMedium
 
 class AddProductForm(Form):
-    content_author = TextField('Artist')
-    content_owner = TextField('Label')
-    event_release_date = TextField('Date')
-    product_title = TextField('Title')
-    product_type = SelectField('Type')
-    product_status = SelectField('Status')
-    product_medium = SelectField('Medium')
+    artist = TextField('Artist')
+    label = TextField('Label')
+    release_date = TextField('Release Date')
+    title = TextField('Title')
+    type = QuerySelectField('Type',
+            query_factory=lambda: ProductType.query.all())
+    status = QuerySelectField('Status',
+            query_factory=lambda: ProductStatus.query.all())
+    medium = QuerySelectField('Medium',
+            query_factory=lambda: ProductMedium.query.all())

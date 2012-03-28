@@ -66,7 +66,7 @@ CREATE TABLE "Event" (
 	event_type_id	                integer NOT NULL,
 	predicted_start_release_date	timestamp,
 	predicted_end_release_date      timestamp,
-	predicted_textual_release_date	text,
+	predicted_textual_release_date	bytea,
 	certainty                       integer,
 	created		                    timestamp NOT NULL DEFAULT current_timestamp,
 	PRIMARY KEY (event_id),

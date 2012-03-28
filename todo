@@ -1,8 +1,33 @@
+00. Change database a tiny bit for less redundancy;
+    better handling of content_authors;
+    and better, simpler and more complete add_product.
 01. Update code to output releases directly to the page as text. Ugly but the boiler plate code is starting to work!
+SELECT
+  p.product_id,
+  p.title,
+  pt.name AS product_type,
+  ps.name AS product_status,
+  pm.name AS product_medium,
+  p.created,
+  w.work_id,
+  w.title AS work_title,
+  e.event_id,
+  et.name AS event_type,
+  e.certainty,
+  e.predicted_start_release_date,
+  e.predicted_end_release_date,
+  e.predicted_textual_release_date
+FROM
+  "Product" AS p
+  LEFT JOIN "ProductMedium" AS pm ON p.product_medium_id = pm.product_medium_id
+  LEFT JOIN "ProductStatus" AS ps ON p.product_status_id = ps.product_status_id
+  LEFT JOIN "ProductType" AS pt ON p.product_type_id = pt.product_type_id
+  LEFT JOIN "Work" AS w ON p.work_id = w.work_id
+  LEFT JOIN "Event" AS e ON p.event_id = e.event_id
+  LEFT JOIN "EventType" AS et ON e.event_type_id = et.event_type_id;
 02. Update code to input releases in (a) bulk and (b) singularly.
 -------------------------------------------------------------------------------
-01. Think simplicity of twitter in style and in function. How basic can I make it? Draw a mockup.
--------------------------------------------------------------------------------
 01. Add comments.
-02. Think about how to separate services and follow 12 factor web app way. Can we use RabbitMQ/Celery to separate these?
+02. Think about how to separate services and follow 12 factor web app way. ZeroRFC?
 03. Create unit tests.
+04. Use something else other than service_name and version. Follow a standard!

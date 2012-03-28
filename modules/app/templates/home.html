@@ -2,5 +2,8 @@
 {% extends layout_template if layout_template is defined else "main-layout.html" %}
 
 {% block content %}
-Test. {{ username }}
+    Test.
+    {% if username %}
+    Your username is: {{ username }}
+    {% endif %}
 {% endblock %}

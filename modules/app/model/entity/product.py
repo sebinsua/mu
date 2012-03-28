@@ -48,6 +48,9 @@ class ProductMedium(db.Model):
     def __repr__(self):
         return '<ProductMedium %r>' % self.name
 
+    def __str__(self):
+        return self.name
+
 class ProductType(db.Model):
     __tablename__ = 'ProductType'
     product_type_id = db.Column(db.Integer, primary_key=True)
@@ -59,6 +62,9 @@ class ProductType(db.Model):
     def __repr__(self):
         return '<ProductType %r>' % self.name
 
+    def __str__(self):
+        return self.name
+
 class ProductStatus(db.Model):
     __tablename__ = 'ProductStatus'
     product_status_id = db.Column(db.Integer, primary_key=True)
@@ -69,3 +75,6 @@ class ProductStatus(db.Model):
 
     def __repr__(self):
         return '<ProductStatus %r>' % self.name
+
+    def __str__(self):
+        return self.name

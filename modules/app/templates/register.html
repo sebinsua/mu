@@ -7,6 +7,9 @@
   {{ output_flashed_messages() }}
   <form method="POST" action="/register">
     {{ form.csrf }}
+    {% if form.next.data != '' %}
+      {{ form.next }}
+    {% endif %}
     <dl>
       {{ render_field(form.username) }}
       {{ render_field(form.email) }}

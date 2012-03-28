@@ -1,5 +1,6 @@
-from flaskext.wtf import Form, TextField, PasswordField, validators
+from .redirect import RedirectForm
+from flaskext.wtf import TextField, PasswordField, validators
 
-class LoginForm(Form):
-    user_identity = TextField('Username or Email', [validators.Length(min=4, max=25)])
+class LoginForm(RedirectForm):
+    user_identity = TextField('Username or email', [validators.Length(min=4, max=25)])
     password = PasswordField('Password', [validators.Required()])

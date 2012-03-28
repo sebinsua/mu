@@ -11,7 +11,9 @@ def show_user(username):
 @bp.route('/login', methods=['GET', 'POST'])
 def login_user():
     from mu.form.login import LoginForm
-    login_form = LoginForm(request.form)
+    login_form = LoginForm(formdata=request.form, obj={
+        'next' : request.referrer if request.referrer else None
+    })
 
     if request.method == "POST" and login_form.validate():
         user_identity = request.form.get('user_identity')
@@ -19,11 +21,10 @@ def login_user():
 
         try:
             if user_domain.login(user_identity, password):
-                # TODO: It would actually be better to redirect to the original page
-                # we were on by passing this via request.form
-                return redirect("/")
+                return login_form.redirect('home.show_home', force_endpoint=True)
             else:
-                flash("This does not match the account's password", "error")
+                flash("There are no accounts with this username and password.", "error")
+                return login_form.redirect()
         except Exception, e:
             flash(e, "error")
 
@@ -32,12 +33,15 @@ def login_user():
 @bp.route('/logout')
 def logout_user():
     user_domain.logout()
-    return redirect('/')
+    redirect_url = request.headers.get('HTTP_REFERER')
+    return redirect(redirect_url) if redirect_url else redirect('/')
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register_user():
     from mu.form.registration import RegistrationForm
-    registration_form = RegistrationForm(request.form)
+    registration_form = RegistrationForm(request.form, obj={
+        'next' : request.referrer if request.referrer else None
+    })
 
     if request.method == "POST" and registration_form.validate():
         # We only need to access the UserDomain when we are passed
@@ -49,10 +53,11 @@ def register_user():
         try:
             user_id = user_domain.register(email, username, password, force_login=True)
             flash("Thanks for registering!", "success")
-            return redirect("/")
+            return registration_form.redirect('home.show_home')
         except Exception, e:
             # Capture particular exception messages
             # and flash these on the register page.
             flash(e, "error")
+            return registration_form.redirect()
 
     return render_template('register.html', form=registration_form)
