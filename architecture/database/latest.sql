@@ -180,29 +180,37 @@ CREATE TABLE "ServiceAgent" (
 	FOREIGN KEY (agent_type_id) REFERENCES "AgentType"
 );
 
--- NOTE: We actually care about the certainty that a user is interested in a particular product or service
---       and not whether they are interested in an 'event'.
-CREATE TABLE "UserProductEvent" (
-	user_product_event_id	serial,
+CREATE TABLE "UserEvent" (
+    user_event_id           serial,
+    user_id                 integer NOT NULL,
+    event_id                integer NOT NULL,
+    start_release_date      timestamp,
+    end_release_date        timestamp,
+    textual_release_date    bytea,
+    created                 timestamp NOT NULL DEFAULT current_timestamp,
+    PRIMARY KEY (user_event_id),
+    FOREIGN KEY (user_id) REFERENCES "User",
+    FOREIGN KEY (event_id) REFERENCES "Event"
+);
+
+CREATE TABLE "UserProduct" (
+	user_product_id	        serial,
 	user_id					integer NOT NULL,
 	product_id				integer NOT NULL,
-	release_date	        timestamp,
-	textual_release_date	bytea,
-	created					timestamp NOT NULL DEFAULT current_timestamp,
-	PRIMARY KEY (user_product_event_id),
+	weight                  integer NOT NULL DEFAULT 50,
+    created					timestamp NOT NULL DEFAULT current_timestamp,
+	PRIMARY KEY (user_product_id),
 	FOREIGN KEY (user_id) REFERENCES "User",
 	FOREIGN KEY (product_id) REFERENCES "Product"
 );
 
-CREATE TABLE "UserServiceEvent" (
-	user_service_event_id	serial,
+CREATE TABLE "UserService" (
+	user_service_id	        serial,
 	user_id					integer NOT NULL,
 	service_id				integer NOT NULL,
-	start_release_date	    timestamp,
-	end_release_date        timestamp,
-	textual_release_date	bytea,
-	created					timestamp NOT NULL DEFAULT current_timestamp,
-	PRIMARY KEY (user_service_event_id),
+	weight                  integer NOT NULL DEFAULT 50,
+    created					timestamp NOT NULL DEFAULT current_timestamp,
+	PRIMARY KEY (user_service_id),
 	FOREIGN KEY (user_id) REFERENCES "User",
 	FOREIGN KEY (service_id) REFERENCES "Service"
 );
