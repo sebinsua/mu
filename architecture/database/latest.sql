@@ -50,7 +50,7 @@ CREATE TABLE "AgentAgent" (
     PRIMARY KEY (agent_agent_id),
     FOREIGN KEY (parent_agent_id) REFERENCES "Agent" (agent_id),
     FOREIGN KEY (child_agent_id) REFERENCES "Agent" (agent_id)
-)
+);
 
 -- e.g. User is following an artist.
 CREATE TABLE "UserAgent" (

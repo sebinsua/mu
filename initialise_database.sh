@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-DATABASE_NAME=`cat APPLICATION_NAME`
+DATABASE_NAME=`cat service_name`
 
 echo "Dropping database: $DATABASE_NAME..."
 dropdb $DATABASE_NAME
