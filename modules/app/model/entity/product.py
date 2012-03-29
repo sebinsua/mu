@@ -1,7 +1,9 @@
 from helper.database import db
+from sqlalchemy.ext.associationproxy import association_proxy
 
 from mu.model.entity.event import Event
 from mu.model.entity.work import Work
+from mu.model.entity.agent import Agent, AgentType
 
 from datetime import datetime
 
@@ -28,6 +30,8 @@ class Product(db.Model):
     event = db.relationship('Event', uselist=False, \
             backref=db.backref('Product', lazy='dynamic', uselist=False))
 
+    agents = association_proxy('ProductAgent', 'Agent')
+
     def __init__(self, title, event_id, product_type_id=None, \
             product_status_id=None, product_medium_id=None, work_id=None):
         self.work_id = work_id
@@ -36,6 +40,28 @@ class Product(db.Model):
         self.event_id = event_id
         self.title = title
         self.sort_title = title[:50]
+
+class ProductAgent(db.Model):
+    __tablename__ = 'ProductAgent'
+    product_agent_id = db.Column(db.Integer, primary_key=True)
+    product_id = db.Column(db.Integer, db.ForeignKey('Product.product_id'), nullable=False)
+    agent_id = db.Column(db.Integer, db.ForeignKey('Agent.agent_id'), nullable=False)
+    agent_order = db.Column(db.Integer)
+    agent_type_id = db.Column(db.Integer, db.ForeignKey('AgentType.agent_type_id'))
+    created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
+
+    product = db.relationship('Product', uselist=False, \
+            backref=db.backref('ProductAgent', lazy='dynamic'))
+    agent = db.relationship('Agent', uselist=False, \
+            backref=db.backref('ProductAgent', lazy='dynamic'))
+    agent_type = db.relationship('AgentType', uselist=False, \
+            backref=db.backref('ProductAgent', lazy='dynamic'))
+
+    def __init__(self, product_id, agent_id, agent_type_id, agent_order=None):
+        self.product_id = product_id
+        self.agent_id = agent_id
+        self.agent_type_id = agent_type_id
+        self.agent_order = agent_order
 
 class ProductMedium(db.Model):
     __tablename__ = 'ProductMedium'
