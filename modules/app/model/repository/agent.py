@@ -5,8 +5,7 @@ def add_agent(agent):
     db.session.commit()
     return agent.agent_id
 
-def link_event_to_agent(agent_id, event_id, agent_type_id):
-    from mu.model.entity.agent import AgentEvent
-    agent_event = AgentEvent(agent_id, event_id, agent_type_id)
-    # TODO: What about the content author product type!
-    return agent_event.agent_event_id
+def link_product_to_agent(agent_id, product_id, agent_type_id):
+    from mu.model.entity.product import ProductAgent
+    product_agent = ProductAgent(product_id, agent_id, agent_type_id)
+    return product_agent.product_agent_id

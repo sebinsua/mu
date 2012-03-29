@@ -9,6 +9,6 @@ def show_home():
         uuid = session['uuid']
         from mu.model.repository.user import fetch_user_with_uuid
         user = fetch_user_with_uuid(uuid)
-        username = user.username
+        username = user.username if user else None
 
     return render_template("home.html", username=username)

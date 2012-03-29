@@ -9,14 +9,11 @@ class ProductDomain:
     def add_product(self, agent_name, event_release_date, \
             product_title, product_type_id=None, product_status_id=None, \
             product_medium_id=None, content_owner_name=None):
-        # event_type_id needs to be set depending on the product_type_id
-        event_type = get_event_type_from_product_type_id(product_type_id)
-        event_type_id = event_type.event_type_id
 
         # Add an Event
         from mu.model.entity.event import Event
         # TODO: Pick the correct release date field depending on the data.
-        event = Event(event_type_id, predicted_textual_release_date=event_release_date)
+        event = Event(predicted_textual_release_date=event_release_date)
         event_id = add_event(event)
 
         # Add a Product
@@ -31,7 +28,7 @@ class ProductDomain:
         # TODO: musicbrainz_mbid, start_date and end_date can be None or fetched from musicbrainz.
         agent_id = add_agent(agent)
         # TODO: For sure the database can be improved again... This is weird.
-        link_event_to_agent(agent_id, event_id, agent_type_id)
+        link_product_to_agent(agent_id, product_id, agent_type_id)
 
         # Optionally add a ContentOwner
         if content_owner_name:

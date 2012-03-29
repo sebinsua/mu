@@ -40,6 +40,10 @@ def add_product_to_content_author(product_type, agent=None):
             'product_medium_id'  : request.form.get('medium')
         }
 
+        print "ProductInfo is: "
+        import pprint
+        pprint.pprint(product_info)
+
         product_domain.add_product(**product_info)
 
     return render_template('product/add_product.html',

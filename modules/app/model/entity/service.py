@@ -57,7 +57,7 @@ class ServiceAgent(db.Model):
 
 class ServiceType(db.Model):
     __tablename__ = 'ServiceType'
-    product_type_id = db.Column(db.Integer, primary_key=True)
+    service_type_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
 
     def __init__(self, name):
