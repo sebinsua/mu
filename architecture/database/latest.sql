@@ -1,5 +1,5 @@
 ﻿-- mu
--- database v0.04
+-- database v0.10
 
 BEGIN;
 
@@ -21,6 +21,7 @@ CREATE TABLE "User" (
 	UNIQUE (username)
 );
 
+-- e.g. Remixer, Group/Band, Artist, Songwriter, Producer, Guitarist, etc.
 CREATE TABLE "AgentType" (
 	agent_type_id	serial,
 	name			varchar(50) NOT NULL,
@@ -39,9 +40,19 @@ CREATE TABLE "Agent" (
 	FOREIGN KEY (agent_type_id) REFERENCES "AgentType"
 );
 
--- TODO: Maybe at some point we could add a user_agent_type_id which
--- would allow us to define the difference between a user following other
--- agents and BEING one.
+-- NOTE: Agent groupings won't be used yet.
+CREATE TABLE "AgentAgent" (
+    agent_agent_id  serial,
+    parent_agent_id integer NOT NULL,
+    child_agent_id  integer NOT NULL,
+    start_date      timestamp,
+    end_date        timestamp,
+    PRIMARY KEY (agent_agent_id),
+    FOREIGN KEY (parent_agent_id) REFERENCES "Agent" (agent_id),
+    FOREIGN KEY (child_agent_id) REFERENCES "Agent" (agent_id)
+)
+
+-- e.g. User is following an artist.
 CREATE TABLE "UserAgent" (
 	user_agent_id	serial,
 	user_id			integer NOT NULL,
@@ -52,27 +63,18 @@ CREATE TABLE "UserAgent" (
 	FOREIGN KEY (agent_id) REFERENCES "Agent"
 );
 
-CREATE TABLE "EventType" (
-	event_type_id	serial,
-	name		    varchar(50),
-	PRIMARY KEY (event_type_id),
-	UNIQUE (name)
-);
-
--- TODO: There is a nicer way of dealing with fuzzy temporal data which I shall
--- come up with.
+-- TODO: A nicer way of storing fuzzy temporal data?
 CREATE TABLE "Event" (
 	event_id                        serial,
-	event_type_id	                integer NOT NULL,
 	predicted_start_release_date	timestamp,
 	predicted_end_release_date      timestamp,
 	predicted_textual_release_date	bytea,
 	certainty                       integer,
 	created		                    timestamp NOT NULL DEFAULT current_timestamp,
-	PRIMARY KEY (event_id),
-	FOREIGN KEY (event_type_id) REFERENCES "EventType"
+	PRIMARY KEY (event_id)
 );
 
+-- e.g. Digital, CD, DVD, Cassette, Vinyl.
 CREATE TABLE "ProductMedium" (
 	product_medium_id	serial,
 	name				varchar(50) NOT NULL,
@@ -80,6 +82,7 @@ CREATE TABLE "ProductMedium" (
 	UNIQUE (name)
 );
 
+-- e.g. Album, EP, Single.
 CREATE TABLE "ProductType" (
 	product_type_id	serial,
 	name			varchar(50) NOT NULL,
@@ -87,6 +90,7 @@ CREATE TABLE "ProductType" (
 	UNIQUE (name)
 );
 
+-- e.g. Official, Promotional, Bootleg.
 CREATE TABLE "ProductStatus" (
 	product_status_id	serial,
 	name				varchar(50) NOT NULL,
@@ -94,6 +98,7 @@ CREATE TABLE "ProductStatus" (
 	UNIQUE (name)
 );
 
+-- e.g. Boxset, US Tour, etc.
 CREATE TABLE "Work" (
 	work_id  serial,
 	title             text NOT NULL,
@@ -102,6 +107,7 @@ CREATE TABLE "Work" (
 	PRIMARY KEY (work_id)
 );
 
+-- e.g. Album, etc.
 CREATE TABLE "Product" (
 	product_id			serial,
 	work_id             integer,
@@ -120,40 +126,85 @@ CREATE TABLE "Product" (
 	FOREIGN KEY (event_id) REFERENCES "Event"
 );
 
+-- e.g. Live Performance.
+CREATE TABLE "ServiceType" (
+	service_type_id	serial,
+	name			varchar(50) NOT NULL,
+	PRIMARY KEY (service_type_id),
+	UNIQUE (name)
+);
+
+CREATE TABLE "Service" (
+    service_id          serial,
+    work_id             integer,
+    service_type_id     integer,
+    event_id            integer NOT NULL,
+    title               text NOT NULL,
+    sort_title          varchar(50),
+    created             timestamp NOT NULL DEFAULT current_timestamp,
+    PRIMARY KEY (service_id),
+    FOREIGN KEY (work_id) REFERENCES "Work",
+    FOREIGN KEY (service_type_id) REFERENCES "ServiceType",
+    FOREIGN KEY (event_id) REFERENCES "Event"
+);
+
+-- NOTE: Both ProductAgent and ServiceAgent show participation:
 -- NOTE: agent_order is used to assign some 'order' to a list
 -- of agents against an event. E.g. an importance. It is used on
 -- addition to agent_type_id to help distinguish agents.
-CREATE TABLE "AgentEvent" (
-	agent_event_id		serial,
+-- ProductAgent contains the artists against a product...
+CREATE TABLE "ProductAgent" (
+	product_agent_id	serial,
+    product_id          integer NOT NULL,
 	agent_id			integer NOT NULL,
 	agent_order         integer,
 	agent_type_id     	integer,
-	event_id            integer NOT NULL,
-	certainty           integer NOT NULL DEFAULT '50',
 	created				timestamp NOT NULL DEFAULT current_timestamp,
-	PRIMARY KEY (agent_event_id),
-	FOREIGN KEY (agent_id) REFERENCES "Agent",
-	FOREIGN KEY (event_id)	REFERENCES "Event",
+	PRIMARY KEY (product_agent_id),
+	FOREIGN KEY (product_id) REFERENCES "Product",
+    FOREIGN KEY (agent_id) REFERENCES "Agent",
 	FOREIGN KEY (agent_type_id) REFERENCES "AgentType"
 );
 
-CREATE TABLE "Action" (
-	action_id   serial,
-	agent_event_id    integer NOT NULL,
-	description text  NOT NULL,
-	PRIMARY KEY (action_id),
-	FOREIGN KEY (agent_event_id) REFERENCES "AgentEvent"
+-- ServiceAgent contains the artists against a service (performance, etc.)
+CREATE TABLE "ServiceAgent" (
+	service_agent_id	serial,
+    service_id          integer NOT NULL,
+	agent_id			integer NOT NULL,
+	agent_order         integer,
+	agent_type_id     	integer,
+	created				timestamp NOT NULL DEFAULT current_timestamp,
+	PRIMARY KEY (service_agent_id),
+	FOREIGN KEY (service_id) REFERENCES "Service",
+    FOREIGN KEY (agent_id) REFERENCES "Agent",
+	FOREIGN KEY (agent_type_id) REFERENCES "AgentType"
 );
 
-CREATE TABLE "UserEvent" (
-	user_event_id			serial,
+-- NOTE: We actually care about the certainty that a user is interested in a particular product or service
+--       and not whether they are interested in an 'event'.
+CREATE TABLE "UserProductEvent" (
+	user_product_event_id	serial,
 	user_id					integer NOT NULL,
-	event_id				integer NOT NULL,
-	certainty     	        integer NOT NULL DEFAULT '100',
+	product_id				integer NOT NULL,
+	release_date	        timestamp,
+	textual_release_date	bytea,
 	created					timestamp NOT NULL DEFAULT current_timestamp,
-	PRIMARY KEY (user_event_id),
+	PRIMARY KEY (user_product_event_id),
 	FOREIGN KEY (user_id) REFERENCES "User",
-	FOREIGN KEY (event_id) REFERENCES "Event"
+	FOREIGN KEY (product_id) REFERENCES "Product"
+);
+
+CREATE TABLE "UserServiceEvent" (
+	user_service_event_id	serial,
+	user_id					integer NOT NULL,
+	service_id				integer NOT NULL,
+	start_release_date	    timestamp,
+	end_release_date        timestamp,
+	textual_release_date	bytea,
+	created					timestamp NOT NULL DEFAULT current_timestamp,
+	PRIMARY KEY (user_service_event_id),
+	FOREIGN KEY (user_id) REFERENCES "User",
+	FOREIGN KEY (service_id) REFERENCES "Service"
 );
 
 CREATE TABLE "ContentOwner" (
@@ -166,6 +217,7 @@ CREATE TABLE "ContentOwner" (
 	PRIMARY KEY (content_owner_id)
 );
 
+-- e.g. Label, Distributor, Holding, Original Production, Bootleg Production, etc.
 CREATE TABLE "ContentOwnerProductType" (
 	content_owner_product_type_id	serial,
 	name							varchar(50),
@@ -176,7 +228,7 @@ CREATE TABLE "ContentOwnerProductType" (
 CREATE TABLE "ContentOwnerProduct" (
 	content_owner_product_id		serial,
 	content_owner_id				integer NOT NULL,
-	product_id						integer NOT NULL,
+	product_id 					    integer NOT NULL,
 	content_owner_product_type_id	integer,
 	created							timestamp NOT NULL DEFAULT current_timestamp,
 	PRIMARY KEY (content_owner_product_id),
