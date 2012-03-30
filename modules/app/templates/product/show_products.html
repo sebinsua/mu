@@ -2,5 +2,24 @@
 
 {% block content %}
     <h1>Products</h1>
-    <div>{{ products|safe }}</div>
+    <table>
+        <thead>
+            <td>Artist</td>
+            <td>Title</td>
+            <td>Type</td>
+            <td>Status</td>
+            <td>Date</td>
+        </thead>
+        <tbody>
+            {% for product in products %}
+                <tr>
+                    <td>{{ product.agents|join(', ') }}</td>
+                    <td>{{ product.title }} {{ product.product_medium.name }}</td>
+                    <td>{{ product.product_type.name }}</td>
+                    <td>{{ product.product_status.name }}</td>
+                    <td>{{ product.event.predicted_textual_release_date }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

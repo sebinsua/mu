@@ -25,10 +25,10 @@ class User(db.Model):
     summary = db.Column(db.Text)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
-    events = association_proxy('UserEvent', 'Event')
-    products = association_proxy('UserProduct', 'Product')
-    services = association_proxy('UserService', 'Service')
-    agents = association_proxy('UserAgent', 'Agent')
+    events = association_proxy('UserEvent', 'event')
+    products = association_proxy('UserProduct', 'product')
+    services = association_proxy('UserService', 'service')
+    agents = association_proxy('UserAgent', 'agent')
 
     def __init__(self, username, email, password, first_name=None, \
             last_name=None, gender=None, date_of_birth=None, summary=None):

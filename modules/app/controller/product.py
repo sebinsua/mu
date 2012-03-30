@@ -16,11 +16,6 @@ def show_products(product_type):
     # 2. Depending on the product_type we should fetch different products out.
     products = product_domain.get_products(product_type)
 
-    from sqlalchemy.orm.attributes import instance_dict
-    import pprint
-    for e in products:
-        pprint.pprint(instance_dict(e))
-
     return render_template('product/show_products.html', products=products)
 
 @bp.route("/add/<product_type>", methods=['GET', 'POST'])
@@ -39,10 +34,6 @@ def add_product_to_content_author(product_type, agent=None):
             'product_status_id'  : request.form.get('status'),
             'product_medium_id'  : request.form.get('medium')
         }
-
-        print "ProductInfo is: "
-        import pprint
-        pprint.pprint(product_info)
 
         product_domain.add_product(**product_info)
 

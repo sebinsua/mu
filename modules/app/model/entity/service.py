@@ -24,7 +24,7 @@ class Service(db.Model):
     event = db.relationship('Event', uselist=False, \
             backref=db.backref('Service', lazy='dynamic', uselist=False))
 
-    agents = association_proxy('ServiceAgent', 'Agent')
+    agents = association_proxy('ServiceAgent', 'agent')
 
     def __init__(self, title, event_id, service_type_id=None, work_id=None):
         self.work_id = work_id

@@ -30,13 +30,14 @@ class Product(db.Model):
     event = db.relationship('Event', uselist=False, \
             backref=db.backref('Product', lazy='dynamic', uselist=False))
 
-    agents = association_proxy('ProductAgent', 'Agent')
+    agents = association_proxy('ProductAgent', 'agent')
 
     def __init__(self, title, event_id, product_type_id=None, \
             product_status_id=None, product_medium_id=None, work_id=None):
         self.work_id = work_id
         self.product_type_id = product_type_id
         self.product_status_id = product_status_id
+        self.product_medium_id = product_medium_id
         self.event_id = event_id
         self.title = title
         self.sort_title = title[:50]
