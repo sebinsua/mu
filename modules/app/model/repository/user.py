@@ -5,7 +5,7 @@ from mu.model.entity.user import User
 
 def add_user(user):
     db.session.add(user)
-    db.session.commit()
+    db.session.flush()
     return user.user_id
 
 def fetch_user_with_identity(user_identity):

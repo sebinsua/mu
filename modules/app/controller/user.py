@@ -2,7 +2,6 @@ from flask import Blueprint, request, redirect, flash, render_template
 from mu.model.domain.user import UserDomain
 
 bp = Blueprint('user', __name__)
-user_domain = UserDomain()
 
 @bp.route('/user/<username>')
 def show_user(username):
@@ -20,7 +19,7 @@ def login_user():
         password = request.form.get('password')
 
         try:
-            if user_domain.login(user_identity, password):
+            if UserDomain.login(user_identity, password):
                 return login_form.redirect('home.show_home', force_endpoint=True)
             else:
                 flash("There are no accounts with this username and password.", "error")
@@ -32,7 +31,7 @@ def login_user():
 
 @bp.route('/logout')
 def logout_user():
-    user_domain.logout()
+    UserDomain.logout()
     redirect_url = request.headers.get('HTTP_REFERER')
     return redirect(redirect_url) if redirect_url else redirect('/')
 
@@ -51,7 +50,7 @@ def register_user():
         password = request.form.get('password')
 
         try:
-            user_id = user_domain.register(email, username, password, force_login=True)
+            user_id = UserDomain.register(email, username, password, force_login=True)
             flash("Thanks for registering!", "success")
             return registration_form.redirect('home.show_home')
         except Exception, e:

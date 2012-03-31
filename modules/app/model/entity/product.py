@@ -1,5 +1,8 @@
 from helper.database import db
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.orm import column_property
+from sqlalchemy.orm.properties import ColumnProperty
+from sqlalchemy.sql.expression import func
 
 from mu.model.entity.event import Event
 from mu.model.entity.work import Work
@@ -64,6 +67,10 @@ class ProductAgent(db.Model):
         self.agent_type_id = agent_type_id
         self.agent_order = agent_order
 
+class LowerCaseComparator(ColumnProperty.Comparator):
+    def __eq__(self, other):
+        return func.lower(self.__clause_element__()) == func.lower(other)
+
 class ProductMedium(db.Model):
     __tablename__ = 'ProductMedium'
     product_medium_id = db.Column(db.Integer, primary_key=True)
@@ -81,7 +88,10 @@ class ProductMedium(db.Model):
 class ProductType(db.Model):
     __tablename__ = 'ProductType'
     product_type_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), unique=True, nullable=False)
+    name = column_property(
+        db.Column(db.String(50), unique=True, nullable=False),
+        comparator_factory=LowerCaseComparator
+    )
 
     def __init__(self, name):
         self.name = name

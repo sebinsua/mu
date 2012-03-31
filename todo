@@ -1,5 +1,1 @@
-01. Better, simpler and more complete add_product.
-02. Update code to input releases in (a) bulk and (b) singularly.
--------------------------------------------------------------------------------
-01. Create unit tests.
-02. Use something else other than service_name and version. Follow a standard!
+01. Initializr? Nice CSS/HTML/JavaScript.

@@ -3,16 +3,22 @@ from flask import session
 from mu.model.repository.user import *
 
 class UserDomain:
-    def register(self, email, username, password, force_login=False):
+    @staticmethod
+    def register(email, username, password, force_login=False):
         from mu.model.entity.user import User
         user = User(username, email, password)
 
         user_id = add_user(user)
+
+        from helper.database import db
+        db.session.commit()
+
         if force_login:
-            self.force_login(user_id)
+            UserDomain.force_login(user_id)
         return user_id
 
-    def login(self, user_identity, password):
+    @staticmethod
+    def login(user_identity, password):
         user = fetch_user_with_identity(user_identity)
 
         if user is not None and user.check_password(password):
@@ -20,11 +26,23 @@ class UserDomain:
             return True
         return False
 
-    def force_login(self, user_id):
+    @staticmethod
+    def force_login(user_id):
         from mu.model.entity.user import User
 
         user = fetch_user_with_user_id(user_id)
         session['uuid'] = user.uuid
 
-    def logout(self):
+    @staticmethod
+    def logout():
         return session.pop('uuid', None)
+
+    @staticmethod
+    def username_of_session():
+        username = None
+        if session.has_key('uuid'):
+            uuid = session['uuid']
+            from mu.model.repository.user import fetch_user_with_uuid
+            user = fetch_user_with_uuid(uuid)
+            username = user.username if user else None
+        return username

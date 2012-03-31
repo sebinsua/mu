@@ -37,6 +37,7 @@ CREATE TABLE "Agent" (
 	sort_name		    varchar(50),
 	created			    timestamp NOT NULL DEFAULT current_timestamp,
 	PRIMARY KEY (agent_id),
+    UNIQUE (name),
 	FOREIGN KEY (agent_type_id) REFERENCES "AgentType"
 );
 
@@ -70,7 +71,6 @@ CREATE TABLE "Event" (
 	predicted_end_release_date      timestamp,
 	predicted_textual_release_date	bytea,
 	certainty                       integer,
-	created		                    timestamp NOT NULL DEFAULT current_timestamp,
 	PRIMARY KEY (event_id)
 );
 
@@ -222,7 +222,8 @@ CREATE TABLE "ContentOwner" (
 	start_date		    date,
 	end_date			date,
 	created				timestamp NOT NULL DEFAULT current_timestamp,
-	PRIMARY KEY (content_owner_id)
+	PRIMARY KEY (content_owner_id),
+    UNIQUE (name, start_date, end_date)
 );
 
 -- e.g. Label, Distributor, Holding, Original Production, Bootleg Production, etc.

@@ -12,6 +12,8 @@ class ContentOwner(db.Model):
     end_date = db.Column(db.DateTime)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
+    __table_args__ = ( db.UniqueConstraint('name', 'start_date', 'end_date'), )
+
     products = association_proxy('ContentOwnerProduct', 'product')
 
     def __init__(self, name, start_date=None, end_date=None):

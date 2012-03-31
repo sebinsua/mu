@@ -11,6 +11,8 @@ class Agent(db.Model):
     sort_name = db.Column(db.String(50))
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
+    __table_args__ = ( db.UniqueConstraint('name'), )
+
     agent_type = db.relationship('AgentType', uselist=False, \
             backref=db.backref('Agent', lazy='dynamic'))
 

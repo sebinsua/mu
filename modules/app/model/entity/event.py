@@ -9,7 +9,6 @@ class Event(db.Model):
     predicted_end_release_date = db.Column(db.DateTime)
     predicted_textual_release_date = db.Column(db.PickleType)
     certainty = db.Column(db.Integer)
-    created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
     def __init__(self, certainty=100, predicted_textual_release_date=None, \
             predicted_start_release_date=None, predicted_end_release_date=None):
