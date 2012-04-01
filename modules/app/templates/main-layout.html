@@ -1,32 +1,46 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    {% block head %}
-      <meta charset="utf-8" />
-      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+    <head>
+        {% block head %}
+            <meta charset="utf-8">
+    	    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-      <link rel="shortcut icon" href="/favicon.ico" />
+            <link rel="shortcut icon" href="/favicon.ico" />
 
-      {% block head_stylesheets %}
-      <link rel="stylesheet" href="{{ url_for('static', filename='styles/reset.css') }}" />
-      <link rel="stylesheet" href="{{ url_for('static', filename='styles/typography.css') }}" />
-      <link rel="stylesheet" href="{{ url_for('static', filename='styles/forms.css') }}" />
-      <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}" />
-      {% endblock %}
+            <meta name="description" content="">
+    	    <meta name="author" content="">
 
-      {% block head_scripts %}
-      <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-      <script type="text/javascript" src="{{ url_for('static', filename='scripts/main.js') }}"></script>
-      {% endblock %}
+    	    <meta name="viewport" content="width=device-width">
 
-      <title>{% block head_title %}{% endblock %}</title>
-    {% endblock %}
-  </head>
-  <body class="{% block body_classes %}{% endblock %}">
-    <div id="main-container">
-      <header id="main-header">{% block header %}{% endblock %}</header>
-      <div id="main-content">{% block content %}{% endblock %}</div>
-      <footer id="main-footer">{% block footer %}{% endblock %}</footer>
-    </div>
-  </body>
+            {% block head_stylesheets %}
+                <link rel="stylesheet" href="{{ url_for('static', filename='style/bootstrap.css') }}" />
+                <link rel="stylesheet" href="{{ url_for('static', filename='style/bootstrap-responsive.css') }}" />
+                <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}" />
+            {% endblock %}
+
+            {% block head_scripts %}
+                <script type="text/javascript" src="{{ url_for('static', filename='script/library/modernizr-2.5.3-respond-1.1.0.min.js"') }}"></script>
+            {% endblock %}
+
+            <title>{% block head_title %}{% endblock %}</title>
+        {% endblock %}
+    </head>
+    <body class="{% block body_classes %}{% endblock %}">
+        <div id="main-container" class="container">
+            <header id="main-header">{% block header %}{% endblock %}</header>
+            <div id="main-content">{% block content %}{% endblock %}</div>
+            <footer id="main-footer">{% block footer %}{% endblock %}</footer>
+        </div><!-- /container -->
+
+        {% block footer_scripts %}
+            <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+            <script>window.jQuery || document.write('<script src="{{ url_for('static', filename='script/library/jquery-1.7.1.js') }}"><\/script>')</script>
+            <script src="{{ url_for('static', filename='script/library/bootstrap/transition.js') }}"></script>
+            <script src="{{ url_for('static', filename='script/library/bootstrap/collapse.js') }}"></script>
+            <script src="{{ url_for('static', filename='script/main.js') }}"></script>
+        {% endblock %}
+    </body>
 </html>
