@@ -1,21 +1,10 @@
-from helper.database import db
+from helper.database import db, check_if_entity_exists
 
 def add_agent(agent):
-    # todo: Test if content_owner already exists in the database by searching for the same
-    #       unique constraints.
-    import pprint
-    print 'agent: '
-    for constraint in agent.__table__.constraints:
-        if isinstance(constraint, db.UniqueConstraint):
-            for column in constraint.columns:
-                pprint.pprint(column.name)
-    # @todo: This should be rewritten into an IsUniqueMixin that can get out a list of columns.
-    # Then check to see whether the values inside this list of columns already exists in the database
-    # using a where key1 = agent.key1 and key2 = agent.key2 and key3 = agent.key3
-    # Use getattr() to help build:
-    # http://stackoverflow.com/questions/7604967/sqlalchemy-build-query-filter-dynamically-from-dict
-    # todo: Next problem is doing the actual insert, which should be done like so:
-    # http://stackoverflow.com/questions/7092396/react-on-uniquekeyviolation-in-sqlalchemy
+    # Test if the agent already exists in the database.
+    unique_agent = check_if_entity_exists(agent)
+    if unique_agent:
+        return unique_agent.agent_id
 
     db.session.add(agent)
     db.session.flush()

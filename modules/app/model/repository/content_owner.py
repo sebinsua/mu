@@ -1,12 +1,10 @@
-from helper.database import db
+from helper.database import db, check_if_entity_exists
 
 def add_content_owner(content_owner):
-    # todo: Test if content_owner already exists in the database by searching for the same
-    #       unique constraints.
-    # import pprint
-    # print 'content_owner: '
-    # for constraint in content_owner.__table__.constraints:
-    #    pprint.pprint(constraint.columns)
+    # Test if the content owner already exists in the database.
+    unique_content_owner = check_if_entity_exists(content_owner)
+    if unique_content_owner:
+        return unique_content_owner.content_owner_id
 
     db.session.add(content_owner)
     db.session.flush()

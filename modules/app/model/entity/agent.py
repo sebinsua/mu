@@ -1,8 +1,8 @@
-from helper.database import db
+from helper.database import db, ConstraintsMixin
 
 from datetime import datetime
 
-class Agent(db.Model):
+class Agent(db.Model, ConstraintsMixin):
     __tablename__ = 'Agent'
     agent_id = db.Column(db.Integer, primary_key=True)
     agent_type_id = db.Column(db.Integer, db.ForeignKey('AgentType.agent_type_id'), nullable=False)

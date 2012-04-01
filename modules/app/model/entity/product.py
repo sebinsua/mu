@@ -1,8 +1,6 @@
-from helper.database import db
+from helper.database import db, LowerCaseComparator
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import column_property
-from sqlalchemy.orm.properties import ColumnProperty
-from sqlalchemy.sql.expression import func
 
 from mu.model.entity.event import Event
 from mu.model.entity.work import Work
@@ -66,10 +64,6 @@ class ProductAgent(db.Model):
         self.agent_id = agent_id
         self.agent_type_id = agent_type_id
         self.agent_order = agent_order
-
-class LowerCaseComparator(ColumnProperty.Comparator):
-    def __eq__(self, other):
-        return func.lower(self.__clause_element__()) == func.lower(other)
 
 class ProductMedium(db.Model):
     __tablename__ = 'ProductMedium'

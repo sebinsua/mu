@@ -1,9 +1,9 @@
-from helper.database import db
+from helper.database import db, ConstraintsMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from datetime import datetime
 
-class ContentOwner(db.Model):
+class ContentOwner(db.Model, ConstraintsMixin):
     __tablename__ = 'ContentOwner'
     content_owner_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text, nullable=False)
