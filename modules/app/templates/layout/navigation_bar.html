@@ -1,0 +1,32 @@
+{% from "helper/core.html" import navigation_bar_main, navigation_bar_account -%}
+{% set brand = "mu" -%}
+
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="/">{{ brand }}</a>
+            <div class="nav-collapse">
+                <ul id="nav-main" class="nav pull-left">
+                    {% for href, id, caption, requires_logged_in in navigation_bar_main %}
+                        <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
+                    {% endfor %}
+                </ul>
+                <ul id="nav-account" class="nav pull-right">
+                    {% if user %}
+                        <li><a href="#">Gravatar + {{ user.username }}</a></li>
+                        {% for href, id, caption, requires_logged_in in navigation_bar_account if requires_logged_in == True %}
+                            <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
+                        {% endfor %}
+                    {% else %}
+                        {% for href, id, caption, requires_logged_in in navigation_bar_account if requires_logged_in == False %}
+                            <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

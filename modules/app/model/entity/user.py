@@ -10,8 +10,9 @@ from mu.model.entity.event import Event
 from datetime import datetime
 import uuid
 from flaskext.bcrypt import generate_password_hash, check_password_hash
+from modules.helper.database import ConstraintsMixin
 
-class User(db.Model):
+class User(db.Model, ConstraintsMixin):
     __tablename__ = 'User'
     user_id = db.Column(db.Integer, primary_key=True)
     uuid = db.Column(db.String(100), unique=True, nullable=False)
@@ -25,6 +26,8 @@ class User(db.Model):
     summary = db.Column(db.Text)
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
+    __table_args__ = (db.UniqueConstraint('uuid'), db.UniqueConstraint('email'), db.UniqueConstraint('username'))
+
     events = association_proxy('UserEvent', 'event')
     products = association_proxy('UserProduct', 'product')
     services = association_proxy('UserService', 'service')
@@ -34,7 +37,7 @@ class User(db.Model):
             last_name=None, gender=None, date_of_birth=None, summary=None):
         self.uuid = str(uuid.uuid1())
         self.username = username
-        self.email = email
+        self.email = email.lower()
         self.password_hash = generate_password_hash(password)
         self.first_name = first_name
         self.last_name = last_name
@@ -44,6 +47,11 @@ class User(db.Model):
 
     def __repr__(self):
         print '<User %r>' % self.username
+
+    def to_dict(self):
+        from sqlalchemy.orm import class_mapper
+        return dict((col.name, getattr(self, col.name))
+            for col in class_mapper(self.__class__).mapped_table.c)
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)

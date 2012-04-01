@@ -1,21 +1,21 @@
 {% from "helper/core.html" import output_flashed_messages %}
 {% from "helper/form.html" import render_field %}
-{% extends layout_template if layout_template is defined else "main-layout.html" %}
+{% extends layout_template if layout_template is defined else "layout/main.html" %}
+{% set active_page = 'register' %}
 
 {% block content %}
-  <h1>Register</h1>
-  {{ output_flashed_messages() }}
-  <form method="POST" action="/register">
-    {{ form.csrf }}
-    {% if form.next.data != '' %}
-      {{ form.next }}
-    {% endif %}
-    <dl>
-      {{ render_field(form.username) }}
-      {{ render_field(form.email) }}
-      {{ render_field(form.password) }}
-      {{ render_field(form.confirm) }}
-    </dl>
-    <input type="submit" value="Register" />
-  </form>
+    <div class="container">
+        <h2>Register</h2>
+        {{ output_flashed_messages() }}
+        <form method="POST" action="/register">
+            {{ form.hidden_tag() }}
+            <dl>
+                {{ render_field(form.username) }}
+                {{ render_field(form.email) }}
+                {{ render_field(form.password) }}
+                {{ render_field(form.confirm) }}
+            </dl>
+            <input type="submit" value="Register" class="btn btn-large btn-primary" />
+        </form>
+    </div>
 {% endblock %}

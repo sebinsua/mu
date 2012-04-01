@@ -1,11 +1,26 @@
 {% macro output_flashed_messages() %}
-  {% with messages = get_flashed_messages(with_categories=True) %}
-    {% if messages %}
-      <ul class="messages">
-        {% for category, message in messages %}
-        <li class="{{ category }}">{{ message }}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-  {% endwith %}
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert{% if category %} alert-{{ category }}{% endif %}">
+                    <a class="close" data-dismiss="alert">×</a>
+                    {% if category == 'error' %}
+                        <strong>Uh Oh!</strong>
+                    {% elif category == 'success' %}
+                        <strong>Well Done!</strong>
+                    {% endif %}
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 {% endmacro %}
+
+{% set navigation_bar_main = [
+    ("/all/releases", "releases", "New Releases", False)
+] -%}
+{% set navigation_bar_account = [
+    ("/logout", "logout", "Logout", True),
+    ("/register", "register", "Register", False),
+    ("/login", "login", "Login", False)
+] -%}

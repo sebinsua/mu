@@ -47,8 +47,11 @@ class ProductDomain:
     @staticmethod
     def get_products(product_type=None):
         # Accept plural but convert to singular...
+        # todo: Is this necessary?!
         if product_type and product_type.endswith('s'):
             product_type = product_type[:-1]
+        if product_type in ['release', 'product']:
+            product_type = None # We want to get everything out in this case.
 
         products = fetch_products(product_type)
         return products

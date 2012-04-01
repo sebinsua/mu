@@ -18,26 +18,37 @@
             {% block head_stylesheets %}
                 <link rel="stylesheet" href="{{ url_for('static', filename='style/bootstrap.css') }}" />
                 <link rel="stylesheet" href="{{ url_for('static', filename='style/bootstrap-responsive.css') }}" />
-                <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}" />
+                <link rel="stylesheet" href="{{ url_for('static', filename='style/main.css') }}" />
             {% endblock %}
 
             {% block head_scripts %}
-                <script type="text/javascript" src="{{ url_for('static', filename='script/library/modernizr-2.5.3-respond-1.1.0.min.js"') }}"></script>
+                <script type="text/javascript" src="{{ url_for('static', filename='script/library/modernizr-2.5.3-respond-1.1.0.min.js') }}"></script>
             {% endblock %}
 
             <title>{% block head_title %}{% endblock %}</title>
         {% endblock %}
     </head>
     <body class="{% block body_classes %}{% endblock %}">
-        <div id="main-container" class="container">
-            <header id="main-header">{% block header %}{% endblock %}</header>
-            <div id="main-content">{% block content %}{% endblock %}</div>
-            <footer id="main-footer">{% block footer %}{% endblock %}</footer>
-        </div><!-- /container -->
+        <div id="main-container">
+            <header id="main-header" class="{% block header_classes %}{% endblock %}">
+                {% block header %}
+                    {% set username = username %}
+                    {% set active_page = active_page|default('home') %}
+                    {% include 'layout/navigation_bar.html' with context %}
+                {% endblock %}
+            </header>
+            <div id="main-content" class="{% block content_classes %}{% endblock %}">
+                {% block content %}{% endblock %}
+            </div>
+            <footer id="main-footer" class="{% block footer_classes %}{% endblock %}">
+                {% block footer %}{% endblock %}
+            </footer>
+        </div><!-- #main-container -->
 
         {% block footer_scripts %}
-            <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
-            <script>window.jQuery || document.write('<script src="{{ url_for('static', filename='script/library/jquery-1.7.1.js') }}"><\/script>')</script>
+            <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.js"></script>
+            <script>window.jQuery || document.write('<script src="{{ url_for('static', filename='script/library/jquery-1.7.2.js') }}"><\/script>')</script>
+            <script src="{{ url_for('static', filename='script/library/bootstrap/alert.js') }}"></script>
             <script src="{{ url_for('static', filename='script/library/bootstrap/transition.js') }}"></script>
             <script src="{{ url_for('static', filename='script/library/bootstrap/collapse.js') }}"></script>
             <script src="{{ url_for('static', filename='script/main.js') }}"></script>

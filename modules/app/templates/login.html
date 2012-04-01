@@ -1,19 +1,19 @@
 {% from "helper/core.html" import output_flashed_messages %}
 {% from "helper/form.html" import render_field %}
-{% extends layout_template if layout_template is defined else "main-layout.html" %}
+{% extends layout_template if layout_template is defined else "layout/main.html" %}
+{% set active_page = 'login' %}
 
 {% block content %}
-  <h1>Login</h1>
-  {{ output_flashed_messages() }}
-  <form method="POST" action="/login">
-    {{ form.csrf }}
-    {% if form.next.data != '' %}
-      {{ form.next }}
-    {% endif %}
-    <dl>
-      {{ render_field(form.user_identity) }}
-      {{ render_field(form.password) }}
-    </dl>
-    <input type="submit" value="Login" />
-  </form>
+    <div class="container">
+        <h2>Login</h2>
+        {{ output_flashed_messages() }}
+        <form method="POST" action="/login">
+            {{ form.hidden_tag() }}
+            <dl>
+                {{ render_field(form.user_identity) }}
+                {{ render_field(form.password) }}
+            </dl>
+            <input type="submit" value="Login" class="btn btn-large btn-primary" />
+        </form>
+    </div>
 {% endblock %}

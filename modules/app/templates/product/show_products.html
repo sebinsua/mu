@@ -1,25 +1,35 @@
-{% extends layout_template if layout_template is defined else "main-layout.html" %}
+{% extends layout_template if layout_template is defined else "layout/main.html" %}
+{% set active_page = 'releases' %}
 
 {% block content %}
-    <h1>Products</h1>
-    <table>
-        <thead>
-            <td>Artist</td>
-            <td>Title</td>
-            <td>Type</td>
-            <td>Status</td>
-            <td>Date</td>
-        </thead>
-        <tbody>
-            {% for product in products %}
-                <tr>
-                    <td>{{ product.agents|join(', ') }}</td>
-                    <td>{{ product.title }} {{ product.product_medium.name }}</td>
-                    <td>{{ product.product_type.name }}</td>
-                    <td>{{ product.product_status.name }}</td>
-                    <td>{{ product.event.predicted_textual_release_date }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="container">
+        <h2>New Releases</h2>
+        {% if user %}
+            <div class="btn-group padded-flow">
+                <a class="btn btn-large" href="/add/release">Add Release</a>
+            </div>
+        {% endif %}
+        <table class="table table-striped table-bordered table-condensed">
+            <thead>
+                <th>Artist</th>
+                <th>Release</th>
+                <th>Expected On</th>
+            </thead>
+            <tbody>
+                {% if products|length > 0 %}
+                    {% for product in products %}
+                        <tr class="{{ loop.cycle('odd', 'even') }}">
+                            <td>{{ product.agents|join(', ') }}</td>
+                            <td>{{ product.title }} [{{ product.product_status.name }} {{ product.product_type.name }} on {{ product.product_medium.name }}]</td>
+                            <td>{{ product.event.predicted_textual_release_date }}</td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="3">No releases found.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

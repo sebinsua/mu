@@ -1,9 +1,12 @@
 {% from "helper/core.html" import output_flashed_messages %}
-{% extends layout_template if layout_template is defined else "main-layout.html" %}
+{% extends layout_template if layout_template is defined else "layout/main.html" %}
+{% set active_page = 'home' %}
 
 {% block content %}
-    Test.
-    {% if username %}
-    Your username is: {{ username }}
-    {% endif %}
+    <div class="container">
+        <div class="hero-unit">
+            <h1>Welcome{% if user %} {{ user.username }}{% endif %}.</h1>
+            <p>Have fun on the site. :)</p>
+        </div>
+    </div>
 {% endblock %}

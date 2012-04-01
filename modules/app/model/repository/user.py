@@ -4,6 +4,8 @@ from helper.database import db
 from mu.model.entity.user import User
 
 def add_user(user):
+    # Test if the user already exists in the database.
+
     db.session.add(user)
     db.session.flush()
     return user.user_id

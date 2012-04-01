@@ -1,14 +1,17 @@
-01. Initializr? Nice CSS/HTML/JavaScript.
+01. FIX THIS: Lazy loading is very slow if it happens over and over again.
+----
 02. UX: Add, Edit, Remove, Browse, View, Filter. Admin Features? Navigation?
 03. Pagination?
-04. Ajax?
-05. User Roles: ACL.
+04. Bulk Import.
+----
+05. User Roles: ACL. Edit Account, Edit Profile.
 06. Voting/unvoting.
+----
 07. Define different time periods, etc. Classify. Version.
-08. Edit Account. Edit Profile.
-09. RSS of updated releases by a filter...
-10. Emails based off this RSS/filter.
-11. Abiilty for users to add events. Vote on these?
-12. OAuth / Facebook Connect.
-13. Bulk Import.
-14. Work the API feeds that I have available to me...
+----
+08. RSS of updated releases by a filter...
+09. Emails based off this RSS/filter.
+10. Abiilty for users to add events. Vote on these?
+----
+11. OAuth / Facebook Connect.
+12. Work the API feeds that I have available to me...

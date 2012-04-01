@@ -10,8 +10,9 @@ bp = Blueprint('product', __name__)
 def show_product(agent, product_type, product):
     return "Product / Event"
 
+@bp.route("/all/")
 @bp.route("/all/<product_type>")
-def show_products(product_type):
+def show_products(product_type=None):
     products = ProductDomain.get_products(product_type)
 
     return render_template('product/show_products.html', products=products)

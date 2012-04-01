@@ -1,23 +1,24 @@
 {% from "helper/core.html" import output_flashed_messages %}
 {% from "helper/form.html" import render_field %}
-{% extends layout_template if layout_template is defined else "main-layout.html" %}
+{% extends layout_template if layout_template is defined else "layout/main.html" %}
+{% set active_page = 'releases' %}
 
 {% block content %}
-  <h1>Product</h1>
-  {{ output_flashed_messages() }}
-  <form method="POST" action="/add/{{ product_type }}{% if agent
-      %}/to/{{ agent }}{% endif %}">
-    {{ form.csrf }}
-    {{ form.agent_type }}
-    <dl>
-        {{ render_field(form.agent) }}
-        {{ render_field(form.content_owner) }}
-        {{ render_field(form.release_date) }}
-        {{ render_field(form.title) }}
-        {{ render_field(form.type) }}
-        {{ render_field(form.status) }}
-        {{ render_field(form.medium) }}
-    </dl>
-    <input type="submit" value="Add" />
-  </form>
+    <div class="container">
+        <h1>Product</h1>
+        {{ output_flashed_messages() }}
+        <form method="POST" action="/add/{{ product_type }}{% if agent %}/to/{{ agent }}{% endif %}">
+            {{ form.hidden_tag() }}
+            <dl>
+                {{ render_field(form.agent) }}
+                {{ render_field(form.content_owner) }}
+                {{ render_field(form.release_date) }}
+                {{ render_field(form.title) }}
+                {{ render_field(form.type) }}
+                {{ render_field(form.status) }}
+                {{ render_field(form.medium) }}
+            </dl>
+            <input type="submit" value="Add" class="btn btn-large btn-primary" />
+        </form>
+    </div>
 {% endblock %}
