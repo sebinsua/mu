@@ -9,11 +9,9 @@ class ProductDomain:
             product_title, product_type_id=None, product_status_id=None, \
             product_medium_id=None, content_owner_name=None):
 
-        # TODO: Normalize content owner and agents. Don't insert redundant data.
-
         # Add an Event
         from mu.model.entity.event import Event
-        # TODO: Pick the correct release date field depending on the data.
+        # @todo: Pick the correct release date field depending on the data.
         event = Event(predicted_textual_release_date=event_release_date)
         event_id = add_event(event)
 
@@ -24,9 +22,8 @@ class ProductDomain:
 
         # Add an Agent
         from mu.model.entity.agent import Agent, AgentType
-        # TODO: musicbrainz_mbid, start_date and end_date can be None or fetched from musicbrainz.
+        # @todo: musicbrainz_mbid, start_date and end_date can be None or fetched from musicbrainz.
         agent = Agent(agent_name, agent_type_id)
-        # TODO: How do we get the agent_id if the agent already exists?
         agent_id = add_agent(agent)
         link_product_to_agent(agent_id, product_id, agent_type_id)
 
@@ -34,8 +31,7 @@ class ProductDomain:
         if content_owner_name:
             from mu.model.entity.content_owner import ContentOwner
             content_owner = ContentOwner(content_owner_name)
-            # TODO: start_date, end_date can be none or fetched from musicbrainz.
-            # TODO: How do we get the content_owner_id if the content_owner already exists!
+            # @todo: start_date, end_date can be none or fetched from musicbrainz.
             content_owner_id = add_content_owner(content_owner)
             link_product_to_content_owner(content_owner_id, product_id)
 
@@ -47,8 +43,7 @@ class ProductDomain:
     @staticmethod
     def get_products(product_type=None):
         # Accept plural but convert to singular...
-        # todo: Is this necessary?!
-        if product_type and product_type.endswith('s'):
+        if product_type and product_type.endswith('s'): # urls are pluralised but data is singular!
             product_type = product_type[:-1]
         if product_type in ['release', 'product']:
             product_type = None # We want to get everything out in this case.
