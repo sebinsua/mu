@@ -5,10 +5,9 @@ from mu.model.repository.content_owner import *
 
 class ProductDomain:
     @staticmethod
-    def add_product(agent_name, agent_type_id, event_release_date, \
-            product_title, product_type_id=None, product_status_id=None, \
-            product_medium_id=None, content_owner_name=None):
-
+    def add_product(agent_name, agent_type_id, event_release_date,
+                    product_title, product_type_id=None, product_status_id=None,
+                    product_medium_id=None, content_owner_name=None):
         # Add an Event
         from mu.model.entity.event import Event
         # @todo: Pick the correct release date field depending on the data.
@@ -17,6 +16,7 @@ class ProductDomain:
 
         # Add a Product
         from mu.model.entity.product import Product
+
         product = Product(product_title, event_id, product_type_id, product_status_id, product_medium_id)
         product_id = add_product(product)
 
@@ -30,12 +30,14 @@ class ProductDomain:
         # Optionally add a ContentOwner
         if content_owner_name:
             from mu.model.entity.content_owner import ContentOwner
+
             content_owner = ContentOwner(content_owner_name)
             # @todo: start_date, end_date can be none or fetched from musicbrainz.
             content_owner_id = add_content_owner(content_owner)
             link_product_to_content_owner(content_owner_id, product_id)
 
         from helper.database import db
+
         db.session.commit()
 
         return product_id

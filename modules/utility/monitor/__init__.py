@@ -22,6 +22,7 @@ def _restart(path):
     print >> sys.stderr, '%s Triggering process restart.' % prefix
     os.kill(os.getpid(), signal.SIGINT)
 
+
 def _modified(path):
     try:
         # If path doesn't denote a file and were previously
@@ -53,6 +54,7 @@ def _modified(path):
         return True
 
     return False
+
 
 def _monitor():
     while 1:
@@ -98,6 +100,7 @@ atexit.register(_exiting)
 def track(path):
     if not path in _files:
         _files.append(path)
+
 
 def start(interval=1.0):
     global _interval

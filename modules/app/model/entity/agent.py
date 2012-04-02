@@ -13,8 +13,8 @@ class Agent(db.Model, ConstraintsMixin):
 
     __table_args__ = ( db.UniqueConstraint('name'), )
 
-    agent_type = db.relationship('AgentType', uselist=False, \
-            backref=db.backref('Agent', lazy='dynamic'))
+    agent_type = db.relationship('AgentType', uselist=False,
+        backref=db.backref('Agent', lazy='dynamic'))
 
     def __init__(self, name, agent_type_id=None, musicbrainz_mbid=None):
         self.musicbrainz_mbid = musicbrainz_mbid
@@ -24,6 +24,7 @@ class Agent(db.Model, ConstraintsMixin):
 
     def __str__(self):
         return self.name
+
 
 class AgentType(db.Model):
     __tablename__ = 'AgentType'

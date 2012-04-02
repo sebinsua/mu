@@ -5,19 +5,23 @@ from mu.model.repository.user import *
 class AccountNotUnique(Exception):
     pass
 
+
 class UserDomain:
     @staticmethod
     def register(email, username, password, force_login=False):
         from mu.model.entity.user import User
+
         user = User(username, email, password)
 
         from modules.helper.database import check_if_entity_exists
+
         if check_if_entity_exists(user) is not None:
             raise AccountNotUnique
 
         user_id = add_user(user)
 
         from helper.database import db
+
         db.session.commit()
 
         if force_login:
@@ -35,8 +39,6 @@ class UserDomain:
 
     @staticmethod
     def force_login(user_id):
-        from mu.model.entity.user import User
-
         user = fetch_user_with_user_id(user_id)
         session['uuid'] = user.uuid
 
@@ -56,5 +58,6 @@ class UserDomain:
         if session.has_key('uuid'):
             uuid = session['uuid']
             from mu.model.repository.user import fetch_user_with_uuid
+
             user = fetch_user_with_uuid(uuid)
         return user

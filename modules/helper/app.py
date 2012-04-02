@@ -3,6 +3,7 @@ from importlib import import_module
 
 def create_app(name):
     from flask import Flask
+
     app = Flask(name)
 
     # Load configuration from code and then attempt to load it from the environment
@@ -15,13 +16,15 @@ def create_app(name):
 
     return app
 
+
 def load_app():
     return get_app()
+
 
 def get_app_name():
     try:
         f = open(os.getcwd() + '/service_name')
-        APPLICATION_NAME = f.read().strip();
+        APPLICATION_NAME = f.read().strip()
     except IOError:
         pass
 
@@ -30,18 +33,16 @@ def get_app_name():
 
     return APPLICATION_NAME
 
+
 def get_app():
     APPLICATION_NAME = get_app_name()
     try:
         module = import_module(APPLICATION_NAME)
-        return module.app
     except ImportError:
         APPLICATION_NAME = 'app'
         module = import_module(APPLICATION_NAME)
-        return module.app
+    return module.app
 
-    # This next line should never be run.
-    return False
 
 def get_tests():
     APPLICATION_NAME = get_app_name()

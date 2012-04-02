@@ -9,11 +9,11 @@ class AddProductForm(Form):
     release_date = TextField('Release Date')
     title = TextField('Title')
     type = QuerySelectField('Type',
-            query_factory=lambda: ProductType.query.all())
+        query_factory=lambda: ProductType.query.all())
     status = QuerySelectField('Status',
-            query_factory=lambda: ProductStatus.query.all())
+        query_factory=lambda: ProductStatus.query.all())
     medium = QuerySelectField('Medium',
-            query_factory=lambda: ProductMedium.query.all())
+        query_factory=lambda: ProductMedium.query.all())
 
     def __init__(self, formdata=None, obj=None, prefix='', **kwargs):
         agent_type_id = AgentType.query.filter_by(name=obj['agent_type']).one().agent_type_id

@@ -10,8 +10,10 @@ def add_content_owner(content_owner):
     db.session.flush()
     return content_owner.content_owner_id
 
+
 def link_product_to_content_owner(content_owner_id, product_id):
     from mu.model.entity.content_owner import ContentOwnerProduct
+
     content_owner_product = ContentOwnerProduct(content_owner_id, product_id)
     db.session.add(content_owner_product)
     db.session.flush()

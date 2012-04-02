@@ -2,6 +2,7 @@ controller_dict = {}
 
 def generate_controller_list(file_name):
     from os import path, listdir
+
     module_directory = path.dirname(file_name)
     reject = ['tmp', 'swp', 'py', 'pyc', '__init__', '']
 
@@ -17,6 +18,7 @@ def generate_controller_list(file_name):
     build_controller_dict(module_directory, all)
 
     return all
+
 
 def build_controller_dict(module_directory, controller_list):
     global controller_dict
@@ -38,6 +40,7 @@ def build_controller_dict(module_directory, controller_list):
 
     controller_dict[module_name] = controller_list
 
+
 def generate_blueprint_list(controller_dict):
     blueprints = []
     for module_key in controller_dict:
@@ -46,6 +49,7 @@ def generate_blueprint_list(controller_dict):
             blueprint = module_key + '.' + controller + '.' + blueprint_var_name
             blueprints.append(blueprint)
     return blueprints
+
 
 def register_controller_blueprints(app, controller):
     from flask import Blueprint

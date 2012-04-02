@@ -10,8 +10,8 @@ class Event(db.Model):
     predicted_textual_release_date = db.Column(db.PickleType)
     certainty = db.Column(db.Integer)
 
-    def __init__(self, certainty=100, predicted_textual_release_date=None, \
-            predicted_start_release_date=None, predicted_end_release_date=None):
+    def __init__(self, certainty=100, predicted_textual_release_date=None,
+                 predicted_start_release_date=None, predicted_end_release_date=None):
         self.certainty = certainty
         self.predicted_start_release_date = predicted_start_release_date
         self.predicted_end_release_date = predicted_end_release_date

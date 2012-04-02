@@ -7,11 +7,13 @@ bp = Blueprint('user', __name__)
 def profile(username):
     pass
 
+
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     from mu.form.login import LoginForm
+
     login_form = LoginForm(formdata=request.form, obj={
-        'next' : request.referrer if request.referrer else None
+        'next': request.referrer if request.referrer else None
     })
 
     if request.method == "POST" and login_form.validate():
@@ -29,17 +31,20 @@ def login():
 
     return render_template('login.html', form=login_form)
 
+
 @bp.route('/logout')
 def logout():
     UserDomain.logout()
     redirect_url = request.headers.get('HTTP_REFERER')
     return redirect(redirect_url) if redirect_url else redirect('/')
 
+
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
     from mu.form.registration import RegistrationForm
+
     registration_form = RegistrationForm(request.form, obj={
-        'next' : request.referrer if request.referrer else None
+        'next': request.referrer if request.referrer else None
     })
 
     if request.method == "POST" and registration_form.validate():

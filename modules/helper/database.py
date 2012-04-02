@@ -40,10 +40,10 @@ class LowerCaseComparator(ColumnProperty.Comparator):
 
 
 class ConstraintsMixin(object):
-    '''
+    """
     This class will never be used on its own. It will always be used with SQLAlchemy declarative_base classes
     to add extra functionality relating to fetching columns that are part of a particular type of constraint.
-    '''
+    """
 
     def get_constraints_by_type(self, ConstraintClass=None):
         constraint_columns = []

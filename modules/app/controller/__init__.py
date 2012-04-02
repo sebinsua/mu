@@ -1,4 +1,5 @@
 from helper.controller import generate_controller_list
+
 controllers = generate_controller_list(__file__)
 
 # Import all of the controllers that belong to __name__.

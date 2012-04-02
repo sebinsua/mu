@@ -1,3 +1,4 @@
+# coding=utf-8
 OVERRIDE_WITH_ENVVAR = 'MU_SETTINGS'
 
 DEBUG = True
