@@ -4,8 +4,6 @@ from flask.helpers import url_for
 
 bp = Blueprint('product', __name__)
 
-# NOTE: A product may be an event!
-
 @bp.route("/artist/<agent>/<product_type>/<product>")
 def show_product(agent, product_type, product):
     return "Product / Event"
