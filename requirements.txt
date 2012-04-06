@@ -1,0 +1,6 @@
+Flask>=0.8
+Flask-Bcrypt>=0.5.2
+Flask-SQLAlchemy>=0.15
+Flask-WTF>=0.6
+dogpile>=0.2.2
+virtualenv>=1.6.4

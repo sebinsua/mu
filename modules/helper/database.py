@@ -1,7 +1,3 @@
-# @todo: What do we gain by not using everything directly?
-# Is this legacy? When should the db be setup? Will it be helpful to create
-# helper methods for myself?
-
 # We need the app object since it contains the config data.
 from helper.app import get_app
 # Required by some of the models for database access.
@@ -10,8 +6,6 @@ from sqlalchemy.orm.properties import ColumnProperty
 from sqlalchemy.sql.expression import func, and_
 
 def check_if_entity_exists(entity):
-    from helper.db import db
-
     entity_unique_constraints = entity.get_constraints_by_type(db.UniqueConstraint)
     # Check to see whether the values inside this list of columns already exists in the database
     # using a where key1 = agent.key1 and key2 = agent.key2 and key3 = agent.key3
@@ -52,5 +46,5 @@ class ConstraintsMixin(object):
                 constraint_columns.append([column.name for column in constraint.columns])
         return constraint_columns
 
-app = get_app()
+app = get_app() # Effectively fetches mu.app in a long-winded way... *sigh*
 db = SQLAlchemy(app)

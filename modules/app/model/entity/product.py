@@ -71,9 +71,11 @@ class ProductMedium(db.Model):
     __tablename__ = 'ProductMedium'
     product_medium_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
+    sequence = db.Column(db.Integer)
 
-    def __init__(self, name):
+    def __init__(self, name, sequence):
         self.name = name
+        self.sequence = sequence
 
     def __repr__(self):
         return '<ProductMedium %r>' % self.name
@@ -89,9 +91,11 @@ class ProductType(db.Model):
         db.Column(db.String(50), unique=True, nullable=False),
         comparator_factory=LowerCaseComparator
     )
+    sequence = db.Column(db.Integer)
 
-    def __init__(self, name):
+    def __init__(self, name, sequence):
         self.name = name
+        self.sequence = sequence
 
     def __repr__(self):
         return '<ProductType %r>' % self.name
@@ -104,9 +108,11 @@ class ProductStatus(db.Model):
     __tablename__ = 'ProductStatus'
     product_status_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
+    sequence = db.Column(db.Integer)
 
-    def __init__(self, name):
+    def __init__(self, name, sequence):
         self.name = name
+        self.sequence = sequence
 
     def __repr__(self):
         return '<ProductStatus %r>' % self.name

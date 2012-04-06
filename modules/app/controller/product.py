@@ -22,15 +22,20 @@ def show_products(product_type=None):
 def add_product_to_agent(product_type, agent=None):
     from mu.model.domain.user import UserDomain
 
-    if UserDomain.username_of_session() is None:
+    if UserDomain.username_of_session() is None or not ProductDomain.is_valid_product_type(product_type):
         # , 401
         return redirect(url_for('home.show_home'))
 
-    from mu.form.add_product import AddProductForm
-
-    add_product_form = AddProductForm(request.form, obj={
-        'agent_type': 'Artist'
-    })
+    from mu.form.add_product import AddProductForm, AddProductTypeForm
+    if product_type.lower() == 'release':
+        add_product_form = AddProductForm(request.form, obj={
+            'agent_type': 'Artist'
+        })
+    else:
+        add_product_form = AddProductTypeForm(request.form, obj={
+            'agent_type': 'Artist',
+            'product_type': product_type
+        })
 
     if request.method == "POST" and add_product_form.validate():
         product_info = {

@@ -61,9 +61,11 @@ class ServiceType(db.Model):
     __tablename__ = 'ServiceType'
     service_type_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
+    sequence = db.Column(db.Integer)
 
-    def __init__(self, name):
+    def __init__(self, name, sequence):
         self.name = name
+        self.sequence = sequence
 
     def __repr__(self):
         return '<ServiceType %r>' % self.name

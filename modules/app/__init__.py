@@ -14,12 +14,14 @@ def inject_user():
 
 #        What would make this usable for me and others?
 # @todo: Get Gravatar working as fallback. ;)
-# @todo: Dropdown on the account button and boxed. Points to View Profile, Edit Account pages.
+# @todo: View Profile, Edit Account pages.
+# @todo: Switch to Flask-Login / invalidate sessions correctly. :)
 # @todo: ACL.
 # @todo: Database design for how often I wish to be notified?
 # ---
-# @todo: Change the order of the mediums, statuses, types, etc.
-# @todo: Add Release, Album, EP, etc. should alter the selected default.
+# @todo: Add in support for Services. Avoid abstracting details right now...
+# @todo: Fix agents/artists support of add/release. :)
+# @todo: Fix titles on pages and capitalisation of EP.
 # @todo: Valid time periods are stored inside a special class. Version. Validate against this, and use to store correctly.
 # @todo: View/Edit Artist, View/Edit Release.
 # @todo: Database design for some kind of tag/genre grouping of services and releases.

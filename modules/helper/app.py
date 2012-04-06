@@ -14,6 +14,7 @@ def create_app(name):
     except RuntimeError:
         pass
 
+    # @todo: cache sessions.
     return app
 
 
@@ -23,6 +24,7 @@ def load_app():
 
 def get_app_name():
     try:
+        # @todo: We should use dogpile to cache this as well as the configuration above. :)
         f = open(os.getcwd() + '/service_name')
         APPLICATION_NAME = f.read().strip()
     except IOError:
