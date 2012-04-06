@@ -47,8 +47,19 @@ class ProductDomain:
         # Accept plural but convert to singular...
         if product_type and product_type.endswith('s'): # urls are pluralised but data is singular!
             product_type = product_type[:-1]
-        if product_type in ['release', 'product']:
+        if product_type == 'release':
             product_type = None # We want to get everything out in this case.
 
         products = fetch_products(product_type)
         return products
+
+    @staticmethod
+    def is_valid_product_type(product_type=None):
+        if product_type == 'release':
+            return True
+
+        try:
+            ProductType.query.filter_by(name=product_type).one()
+            return True
+        except:
+            return False

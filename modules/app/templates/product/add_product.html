@@ -1,11 +1,22 @@
 {% from "helper/core.html" import output_flashed_messages %}
 {% from "helper/form.html" import render_field %}
 {% extends layout_template if layout_template is defined else "layout/main.html" %}
+
 {% set active_page = 'releases' %}
+{% if product_type == 'ep' %}
+{% set title = 'Add EP' %}
+{% else %}
+{% set title = 'Add ' + product_type|capitalize %}
+{% endif %}
+
+{% block head_title %}
+     -
+    {{ title }}
+{% endblock %}
 
 {% block content %}
     <div class="container">
-        <h1>Product</h1>
+        <h2>{{ title }}</h2>
         {{ output_flashed_messages() }}
         <form method="POST" action="/add/{{ product_type }}{% if agent %}/to/{{ agent }}{% endif %}">
             {{ form.hidden_tag() }}
