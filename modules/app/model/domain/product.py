@@ -10,7 +10,6 @@ class ProductDomain:
                     product_medium_id=None, content_owner_name=None):
         # Add an Event
         from mu.model.entity.event import Event
-        # @todo: Pick the correct release date field depending on the data.
         event = Event(predicted_textual_release_date=event_release_date)
         event_id = add_event(event)
 
@@ -22,7 +21,6 @@ class ProductDomain:
 
         # Add an Agent
         from mu.model.entity.agent import Agent, AgentType
-        # @todo: musicbrainz_mbid, start_date and end_date can be None or fetched from musicbrainz.
         agent = Agent(agent_name, agent_type_id)
         agent_id = add_agent(agent)
         link_product_to_agent(agent_id, product_id, agent_type_id)
@@ -32,7 +30,6 @@ class ProductDomain:
             from mu.model.entity.content_owner import ContentOwner
 
             content_owner = ContentOwner(content_owner_name)
-            # @todo: start_date, end_date can be none or fetched from musicbrainz.
             content_owner_id = add_content_owner(content_owner)
             link_product_to_content_owner(content_owner_id, product_id)
 

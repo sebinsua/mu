@@ -13,6 +13,9 @@ class Event(db.Model):
     def __init__(self, certainty=100, predicted_textual_release_date=None,
                  predicted_start_release_date=None, predicted_end_release_date=None):
         self.certainty = certainty
-        self.predicted_start_release_date = predicted_start_release_date
-        self.predicted_end_release_date = predicted_end_release_date
-        self.predicted_textual_release_date = predicted_textual_release_date
+
+        from mu.model.entity.fuzzy_time import FuzzyTime
+        fuzzy_time = FuzzyTime(predicted_textual_release_date, predicted_start_release_date, predicted_end_release_date)
+        self.predicted_start_release_date = fuzzy_time.predicted_start_release_date
+        self.predicted_end_release_date = fuzzy_time.predicted_end_release_date
+        self.predicted_textual_release_date = fuzzy_time

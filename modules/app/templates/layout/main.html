@@ -30,14 +30,14 @@
                     src="{{ url_for('static', filename='script/library/modernizr-2.5.3-respond-1.1.0.min.js') }}"></script>
         {% endblock %}
 
-        <title>{% block head_title %}{% endblock %}</title>
+        {% from "helper/core.html" import brand %}
+        <title>{{ brand }}{% block head_title %}{% endblock %}</title>
     {% endblock %}
 </head>
 <body class="{% block body_classes %}{% endblock %}">
 <div id="main-container">
     <header id="main-header" class="{% block header_classes %}{% endblock %}">
         {% block header %}
-            {% set username = username %}
             {% set active_page = active_page|default('home') %}
             {% include 'layout/navigation_bar.html' with context %}
         {% endblock %}

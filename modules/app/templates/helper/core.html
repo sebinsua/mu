@@ -16,9 +16,12 @@
 {% endwith %}
 {% endmacro %}
 
+{% set brand = "mu" -%}
+
 {% set navigation_bar_main = [
 ("/all/releases", "releases", "New Releases", False)
 ] -%}
+
 {% set navigation_bar_account = [
 ("/logout", "logout", "Logout", True),
 ("/register", "register", "Register", False),

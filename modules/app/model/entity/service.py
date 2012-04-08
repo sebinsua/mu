@@ -1,4 +1,5 @@
-from helper.database import db
+from sqlalchemy.orm import column_property
+from helper.database import db, LowerCaseComparator
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from mu.model.entity.event import Event
@@ -60,7 +61,10 @@ class ServiceAgent(db.Model):
 class ServiceType(db.Model):
     __tablename__ = 'ServiceType'
     service_type_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), unique=True, nullable=False)
+    name = column_property(
+        db.Column(db.String(50), unique=True, nullable=False),
+        comparator_factory=LowerCaseComparator
+    )
     sequence = db.Column(db.Integer)
 
     def __init__(self, name, sequence):
